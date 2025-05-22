@@ -1,0 +1,728 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+/* General Styling */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f0f2f5;
+    padding-top: 80px; /* Adjusted for fixed navbar height */
+    color: #333;
+}
+
+/* Custom Checkbox */
+input[type="checkbox"] {
+    cursor: pointer;
+    transform: scale(1.25);
+    margin-right: 5px;
+}
+
+/* Navbar */
+.navbar {
+    padding: 12px 20px;
+    background-color: #36bf76;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.navbar.scrolled {
+    background-color: #28a745;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.navbar-brand {
+    color: #fff !important;
+    font-weight: 600;
+    font-size: 1.5rem;
+}
+
+.navbar-brand small {
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 0.8rem;
+    display: block;
+}
+
+.navbar-nav .nav-link {
+    color: #fff !important;
+    padding: 8px 15px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover {
+    background-color: #4caf50;
+    border-radius: 4px;
+}
+
+.navbar-nav .nav-item.active .nav-link {
+    background-color: #4caf50;
+    color: #fff !important;
+    border-radius: 4px;
+}
+
+/* Main Content */
+.main-content {
+    padding: 20px;
+    min-height: calc(100vh - 160px); /* Adjust for navbar and footer */
+}
+
+/* Breadcrumbs */
+.breadcrumb {
+    background-color: #f5f5f5;
+    border-radius: 5px;
+    padding: 10px 15px;
+    margin-bottom: 20px;
+}
+
+.breadcrumb li+li:before {
+    content: ">";
+    padding: 0 8px;
+    color: #666;
+}
+
+.breadcrumb a {
+    color: #36bf76;
+    text-decoration: none;
+    position: relative;
+}
+
+.breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+/* Widget Box */
+.widget-box {
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 20px;
+}
+
+.widget-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.widget-header {
+    background: #5ba885;
+    color: #fff;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    padding: 15px 25px;
+}
+
+.widget-header h4 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.widget-main {
+    padding: 20px;
+}
+
+/* Tables (Including DataTables) */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    background-color: #fff;
+}
+
+.table th,
+.table td {
+    padding: 12px;
+    text-align: center; /* Centered as per Task/Category Index.cshtml */
+    border-bottom: 1px solid #ddd;
+}
+
+.table th {
+    background-color: #5ba885;
+    color: #fff;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.table-striped>tbody>tr:nth-of-type(odd) {
+    background-color: #f9f9f9;
+}
+
+.table-hover>tbody>tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* DataTables Specific */
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    color: #36bf76 !important;
+    border: none;
+    background: none;
+    padding: 5px 10px;
+    margin: 0 2px;
+    border-radius: 4px;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background-color: #36bf76 !important;
+    color: #fff !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background-color: #36bf76 !important;
+    color: #fff !important;
+}
+
+.dataTables_wrapper .dataTables_processing {
+    color: #36bf76;
+    font-weight: bold;
+}
+
+/* Forms */
+.form-group {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.form-group label {
+    width: 25%;
+    font-weight: 600;
+    color: #555;
+    transition: all 0.3s ease;
+}
+
+.form-group .col-xs-9 {
+    width: 75%;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    box-sizing: border-box;
+    padding: 10px 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: #36bf76;
+    box-shadow: 0 0 5px rgba(54, 191, 118, 0.3);
+    outline: none;
+}
+
+.form-group input:invalid:not(:placeholder-shown),
+.form-group select:invalid,
+.form-group textarea:invalid:not(:placeholder-shown) {
+    border-color: #dc3545;
+}
+
+.form-group .text-danger {
+    font-size: 0.85rem;
+    color: #dc3545;
+    margin-top: 5px;
+    display: block;
+}
+
+/* Buttons */
+.btn-primary,
+.btn-warning,
+.btn-secondary,
+.btn-app {
+    border: none;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    border-radius: 8px;
+    background-color: #36bf76;
+    color: #fff;
+}
+
+.btn-primary:hover,
+.btn-app:hover {
+    background-color: #28a745;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn-primary:active,
+.btn-app:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-warning {
+    background-color: #ffca2c;
+    color: #333;
+}
+
+.btn-warning:hover {
+    background-color: #e0a800;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn-app {
+    padding: 8px;
+    font-size: 12px;
+    line-height: 1;
+}
+
+/* Footer */
+.footer {
+    background-color: #f5f5f5;
+    padding: 15px 0;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #666;
+    border-top: 1px solid #ddd;
+}
+
+.footer a {
+    color: #36bf76;
+    text-decoration: none;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .form-group {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .form-group label {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+
+    .form-group .col-xs-9 {
+        width: 100%;
+    }
+
+    .navbar-brand small {
+        display: none;
+    }
+
+    .navbar-nav .nav-link {
+        padding: 10px;
+    }
+}
+
+.btn.btn-app.btn-primary.btn-sm {
+    padding: 12px 20px;
+    font-size: 1rem;
+    background-color: #007bff;
+    border-radius: 8px;
+    border: none;
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+    transition: all 0.3s ease;
+    position: absolute;
+    top: -60px;
+    right: 0;
+    z-index: 1050;
+}
+
+.btn.btn-app.btn-primary.btn-sm:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+/* Form Inputs và Dropdown rộng toàn cột */
+form#form-task .form-group .form-control {
+    width: 100% !important;
+    max-width: none;
+    box-sizing: border-box;
+}
+
+/* Dropdown rộng hơn để không bị che chữ */
+form#form-task select.form-control {
+    min-width: 100%;
+    padding-right: 32px; /* phòng trường hợp có scrollbar */
+}
+
+/* Đảm bảo input datetime-local trông đồng bộ */
+form#form-task input[type="datetime-local"] {
+    width: 100% !important;
+}
+
+/* Căn chỉnh lại lề giữa label và input */
+form#form-task .form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+form#form-task .form-group label {
+    flex: 0 0 25%;
+    max-width: 25%;
+    font-weight: 500;
+}
+
+form#form-task .form-group .col-xs-9 {
+    flex: 1;
+    max-width: 75%;
+}
+
+/* Add Task Button Styling */
+.btn-add-task {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 24px;
+    margin-left: 16px;
+    margin-bottom: -12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    background-color: #36bf76; /* Matches your theme */
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    text-transform: none;
+}
+
+.btn-add-task:hover {
+    background-color: #28a745;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    color: #fff;
+}
+
+.btn-add-task:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn-add-task i {
+    margin-right: 8px;
+    font-size: 1.3rem;
+}
+
+/* Container for the button */
+.add-task-container {
+    position: relative;
+    z-index: 10; /* Ensure it stays above other elements */
+}
+
+/* Clearfix to prevent layout issues */
+.add-task-container::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .btn-add-task {
+        padding: 10px 20px;
+        font-size: 1rem;
+    }
+    .add-task-container {
+        float: none !important; /* Remove pull-right on small screens */
+        text-align: center; /* Center button on small screens */
+    }
+}
+
+.lesson-item video,
+.lesson-item img {
+    display: block;
+    margin: 15px auto;  /* Increased top/bottom margin and auto left/right for centering */
+    border-radius: 10px;
+    max-width: 100%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.lesson-item a.btn-outline-info {
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 10px 16px;
+}
+
+/* File Upload Styling */
+.file-upload-container {
+    margin-bottom: 15px;
+}
+
+.file-upload-area {
+    border: 2px dashed #36bf76;
+    border-radius: 10px;
+    padding: 30px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-color: #f8f9fa;
+    position: relative;
+}
+
+.file-upload-area:hover {
+    background-color: #f0f8f4;
+}
+
+.file-upload-area.dragover {
+    background-color: #e6f7ee;
+    border-color: #28a745;
+}
+
+.file-upload-area i {
+    font-size: 2.5rem;
+    color: #36bf76;
+    margin-bottom: 10px;
+}
+
+.file-upload-area p {
+    color: #666;
+    margin-bottom: 0;
+}
+
+.file-upload-area .browse-link {
+    color: #36bf76;
+    font-weight: 600;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.file-upload-area input[type="file"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.file-preview {
+    margin-top: 15px;
+    text-align: center;
+}
+
+/* Image Preview */
+.image-container {
+    display: flex;
+    flex-direction: column;  /* Changed to column for vertical alignment */
+    align-items: center;  /* Center horizontally */
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    padding: 10px;
+    margin-top: 15px;
+    text-align: center;  /* Center text */
+}
+
+.image-container img {
+    max-height: 120px;
+    max-width: 100%;  /* Changed from fixed width to responsive */
+    border-radius: 6px;
+    margin: 0 auto 15px auto;  /* Center image with bottom margin */
+    object-fit: cover;
+    display: block;  /* Ensures proper centering */
+}
+
+.image-info {
+    flex: 1;
+    text-align: center;  /* Center text information */
+    width: 100%;  /* Full width for proper centering */
+}
+
+.image-filename {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #333;
+    word-break: break-all;
+}
+
+.image-size {
+    display: block;
+    color: #777;
+    font-size: 0.9rem;
+}
+
+/* Video Preview and Container */
+.video-preview-container, .video-container {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    padding: 10px;
+    margin-top: 15px;
+}
+
+.video-icon {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f1f1f1;
+    border-radius: 6px;
+    margin-right: 15px;
+}
+
+.video-icon i {
+    font-size: 2rem;
+    color: #dc3545;
+}
+
+.video-info {
+    flex: 1;
+}
+
+.video-filename {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #333;
+    word-break: break-all;
+}
+
+.video-size {
+    display: block;
+    color: #777;
+    font-size: 0.9rem;
+}
+
+.video-container video {
+    width: 100%;
+    max-width: 580px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    margin: 15px auto;  /* Auto margins for centering */
+    display: block;
+    background-color: #000;
+}
+
+/* Document Preview and Container */
+.document-preview-container, .document-container {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    padding: 10px;
+    margin-top: 15px;
+}
+
+.document-icon {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f1f1f1;
+    border-radius: 6px;
+    margin-right: 15px;
+}
+
+.document-icon i {
+    font-size: 2rem;
+    color: #007bff;
+}
+
+.document-icon i.fa-file-pdf {
+    color: #dc3545;
+}
+
+.document-icon i.fa-file-word {
+    color: #2b579a;
+}
+
+.document-icon i.fa-file-excel {
+    color: #217346;
+}
+
+.document-icon i.fa-file-powerpoint {
+    color: #d24726;
+}
+
+.document-info {
+    flex: 1;
+}
+
+.document-filename {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #333;
+    word-break: break-all;
+}
+
+.document-size {
+    display: block;
+    color: #777;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+
+.document-info .btn {
+    padding: 5px 15px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+/* Lesson item styling */
+.lesson-item {
+    border-left: 4px solid #36bf76 !important;
+    transition: all 0.3s ease;
+}
+
+.lesson-item:hover {
+    box-shadow: 0 8px 15px rgba(0,0,0,0.15) !important;
+}
+
+.lesson-item label {
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 8px;
+}
+
+.lesson-item video {
+    border-radius: 10px;
+    background-color: #000;
+    max-height: 350px;
+    width: 100%;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .image-container, .video-container, .document-container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .image-container img {
+        margin: 0 auto 10px auto;  /* Center image with auto left/right margins */
+    }
+
+    .video-icon, .document-icon {
+        margin: 0 auto 10px auto;  /* Center icons with auto left/right margins */
+    }
+}
+
+/* Additional image centering for all images in the app */
+.form-group img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 100%;
+}
+
+/* Center file preview content */
+.file-preview {
+    text-align: center;
+    margin-top: 15px;
+}

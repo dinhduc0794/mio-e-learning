@@ -17,13 +17,28 @@
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        <a class="nav-link text-white" asp-controller="Home" asp-action="Index">Trang chủ</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        <a class="nav-link @((ViewContext.RouteData.Values["Controller"]?.ToString() == "Category") ? "active" : "")" asp-controller="Category" asp-action="Index">Danh mục</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-white" href="#" id="navbarCategoryDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Khóa học
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarCategoryDropdown">
+                            <a class="dropdown-item" asp-controller="Course" asp-action="Index">Tất cả khóa học</a>
+                            @if (ViewBag.AllCategories is List<SelectListItem> categories)
+                            {
+                                foreach (var category in categories)
+                                {
+                                    <a class="dropdown-item" asp-controller="Course" asp-action="Index" asp-route-categoryId="@category.Value">@category.Text</a>
+                                }
+                            }
+                        </div>
                     </li>
                 </ul>
             </div>

@@ -8,6 +8,7 @@ using Mio.ELearning.Service.Services;
 
 namespace Mio.ELearning.AdminSite.Controllers;
 
+[Area("Course")] 
 public class CourseController : Controller
 {
     private readonly ICourseService _courseService;

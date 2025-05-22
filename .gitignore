@@ -1,5 +1,35 @@
+# === .NET Core / .NET ===
 bin/
 obj/
-/packages/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# === Rider ===
+.idea/
+*.sln.iml
+*.csproj.iml
 riderModule.iml
-/_ReSharper.Caches/
+/.idea/
+/_ReSharper.*
+/resharper-host/
+
+# === VS Code ===
+.vscode/
+.history/
+
+# === NuGet ===
+/packages/
+*.nupkg
+*.snupkg
+project.lock.json
+project.fragment.lock.json
+
+# === Others ===
+*.log
+*.tmp
+*.bak
+*.swp
+*.DS_Store
+Thumbs.db
