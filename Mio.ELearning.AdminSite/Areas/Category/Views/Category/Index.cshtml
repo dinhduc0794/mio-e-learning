@@ -51,77 +51,78 @@
     </div>
 </div>
 
-@section Scripts {
+@section Scripts {  
     <script>
         $(document).ready(function () {
             var tblCategory = $("#categoryList").DataTable({
-                "destroy": true,
-                "serverSide": false,
-                "processing": false,
-                "language": {
-                    "emptyTable": "Không có dữ liệu",
-                    "infoEmpty": "Hiển thị 0 đến 0 của 0 bản ghi",
-                    "processing": "Đang tải dữ liệu...",
-                    "paginate": {
-                        "first": "Đầu",
-                        "last": "Cuối",
-                        "next": "Tiếp",
-                        "previous": "Trước"
+                destroy: true,
+                serverSide: false,
+                processing: false,
+                language: {
+                    emptyTable: "Không có dữ liệu",
+                    info: "Hiển thị _START_ đến _END_ của _TOTAL_ bản ghi",
+                    infoEmpty: "Hiển thị 0 đến 0 của 0 bản ghi",
+                    processing: "Đang tải dữ liệu...",
+                    paginate: {
+                        first: "Đầu",
+                        last: "Cuối",
+                        next: "Tiếp",
+                        previous: "Trước"
                     }
                 },
-                "autoWidth": true,
-                "responsive": true,
-                "ordering": false,
-                "pageLength": 10,
-                "lengthChange": false,
-                "searching": false,
-                "ajax": {
-                    "url": "@Url.Action("GetAllCategories", "Category")",
-                    "method": "GET",
-                    "dataSrc": "data"
+                autoWidth: true,
+                responsive: true,
+                ordering: true,
+                pageLength: 5,
+                lengthChange: false,
+                searching: false,
+                ajax: {
+                    url: "@Url.Action("GetAllCategories", "Category")",
+                    method: "GET",
+                    dataSrc: "data"
                 },
-                "paging": false,
-                "columns": [
+                paging: true,
+                columns: [
                     {
-                        "data": "name",
-                        "render": function (data, type, row) {
+                        data: "name",
+                        render: function (data, type, row) {
                             return data || "N/A";
                         },
-                        "className": "text-center"
+                        className: "text-center"
                     },
                     {
-                        "data": "description",
-                        "render": function (data, type, row) {
+                        data: "description",
+                        render: function (data, type, row) {
                             return data || "N/A";
                         },
-                        "className": "text-center"
+                        className: "text-center"
                     },
                     {
-                        "data": "createdAt",
-                        "render": function (data, type, row) {
+                        data: "createdAt",
+                        render: function (data, type, row) {
                             return moment(data).format('DD/MM/YYYY HH:mm');
                         },
-                        "className": "text-center"
+                        className: "text-center"
                     },
                     {
-                        "data": "updatedAt",
-                        "render": function (data, type, row) {
+                        data: "updatedAt",
+                        render: function (data, type, row) {
                             return moment(data).format('DD/MM/YYYY HH:mm');
                         },
-                        "className": "text-center"
+                        className: "text-center"
                     },
                     {
-                        "data": "categoryId",
-                        "render": function (data, type, row) {
+                        data: "categoryId",
+                        render: function (data, type, row) {
                             return `
-                                <a href="/Category/Form/${data}" data-bs-toggle="tooltip" title="Sửa danh mục">
+                                <a href="@Url.Action("Form")/${data}" data-bs-toggle="tooltip" title="Sửa danh mục">
                                     <i class="fas fa-pen-square mx-1 text-primary" style="font-size:1.5em; line-height:1em;"></i>
                                 </a>
                                 <a href="#" onclick="deleteCategory(${data})" data-bs-toggle="tooltip" title="Xóa danh mục">
                                     <i class="fas fa-trash-alt mx-1 text-danger" style="font-size:1.5em; line-height:1em;"></i>
                                 </a>`;
                         },
-                        "className": "text-center"
+                        className: "text-center"
                     }
                 ]
             });

@@ -76,27 +76,28 @@
     <script>
         $(document).ready(function () {
             var tblCourse = $("#courseList").DataTable({
-                "destroy": true,
-                "serverSide": false,
-                "processing": false,
-                "language": {
-                    "emptyTable": "Không có dữ liệu",
-                    "info": "Hiển thị _START_ đến _END_ của _TOTAL_ bản ghi",
-                    "infoEmpty": "Hiển thị 0 đến 0 của 0 bản ghi",
-                    "processing": "Đang tải dữ liệu...",
-                    "paginate": {
-                        "first": "Đầu",
-                        "last": "Cuối",
-                        "next": "Tiếp",
-                        "previous": "Trước"
+                destroy: true,
+                serverSide: false,
+                processing: false,
+                language: {
+                    emptyTable: "Không có dữ liệu",
+                    info: "Hiển thị _START_ đến _END_ của _TOTAL_ bản ghi",
+                    infoEmpty: "Hiển thị 0 đến 0 của 0 bản ghi",
+                    processing: "Đang tải dữ liệu...",
+                    paginate: {
+                        first: "Đầu",
+                        last: "Cuối",
+                        next: "Tiếp",
+                        previous: "Trước"
                     }
                 },
-                "autoWidth": true,
-                "responsive": true,
-                "ordering": true,
-                "pageLength": 2,
-                "lengthChange": false,
-                "searching": false,
+                autoWidth: true,
+                responsive: true,
+                ordering: true,
+                pageLength: 5,
+                lengthChange: false,
+                searching: false,
+                paging: true,
                 ajax: {
                     url: '@Url.Action("GetAllCourses", "Course")',
                     method: 'GET',

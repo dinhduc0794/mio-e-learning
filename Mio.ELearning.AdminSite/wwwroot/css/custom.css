@@ -140,7 +140,7 @@ input[type="checkbox"] {
 }
 
 .table th {
-    background-color: #5ba885;
+    background-color: #5ba885!important;
     color: #fff;
     font-weight: bold;
     text-transform: uppercase;
