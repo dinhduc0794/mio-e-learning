@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Areas\Home\Views\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Home\Views\Privacy.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Mio.ELearning.Service\Mio.ELearning.Service.csproj" />
+      <ProjectReference Include="..\Mio.ELearning.Core\Mio.ELearning.Core.csproj" />
+      <ProjectReference Include="..\Mio.ELearning.Data\Mio.ELearning.Data.csproj" />
+    </ItemGroup>
+
+</Project>

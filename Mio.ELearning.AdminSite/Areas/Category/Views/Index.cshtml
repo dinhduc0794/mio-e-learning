@@ -1,0 +1,149 @@
+@model Mio.ELearning.Core.ViewModels.CategoryViewModel
+@{
+    ViewData["Title"] = "Danh sách danh mục khóa học";
+}
+
+<div class="main-content">
+    <div class="main-content-inner">
+        <div class="breadcrumbs" id="breadcrumbs">
+            <ul class="breadcrumb">
+                <li>
+                    <i class="ace-icon fa fa-home home-icon"></i>
+                    <a asp-controller="Home" asp-action="Index">Trang chủ</a>
+                </li>
+                <li class="active">Danh sách danh mục khóa học</li>
+            </ul>
+        </div>
+
+        <div class="page-content">
+            <div class="page-header">
+                <h1 style="font-weight: bold;">Danh sách danh mục khóa học</h1>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="add-task-container" style="margin-bottom: 20px;">
+                        <a href="@Url.Action("Form", new { id = 0 })">
+                            <button class="btn btn-add-task btn-primary" title="Thêm danh mục">
+                                <i class="ace-icon fa fa-plus bigger-130"></i> Thêm danh mục
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table id="categoryList" class="table table-striped table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th class="text-center">Tên danh mục</th>
+                        <th class="text-center">Mô tả</th>
+                        <th class="text-center">Ngày tạo</th>
+                        <th class="text-center">Ngày sửa</th>
+                        <th class="text-center">Thao tác</th>
+                    </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            var tblCategory = $("#categoryList").DataTable({
+                "destroy": true,
+                "serverSide": false,
+                "processing": false,
+                "language": {
+                    "emptyTable": "Không có dữ liệu",
+                    "infoEmpty": "Hiển thị 0 đến 0 của 0 bản ghi",
+                    "processing": "Đang tải dữ liệu...",
+                    "paginate": {
+                        "first": "Đầu",
+                        "last": "Cuối",
+                        "next": "Tiếp",
+                        "previous": "Trước"
+                    }
+                },
+                "autoWidth": true,
+                "responsive": true,
+                "ordering": false,
+                "pageLength": 10,
+                "lengthChange": false,
+                "searching": false,
+                "ajax": {
+                    "url": "@Url.Action("GetAllCategories", "Category")",
+                    "method": "GET",
+                    "dataSrc": "data"
+                },
+                "paging": false,
+                "columns": [
+                    {
+                        "data": "name",
+                        "render": function (data, type, row) {
+                            return data || "N/A";
+                        },
+                        "className": "center"
+                    },
+                    {
+                        "data": "description",
+                        "render": function (data, type, row) {
+                            return data || "N/A";
+                        },
+                        "className": "center"
+                    },
+                    {
+                        "data": "createdAt",
+                        "render": function (data, type, row) {
+                            return moment(data).format('DD/MM/YYYY HH:mm');
+                        },
+                        "className": "center"
+                    },
+                    {
+                        "data": "updatedAt",
+                        "render": function (data, type, row) {
+                            return moment(data).format('DD/MM/YYYY HH:mm');
+                        },
+                        "className": "center"
+                    },
+                    {
+                        "data": "categoryId",
+                        "render": function (data, type, row) {
+                            return `
+                                <a href="/Category/Form/${data}" data-toggle="tooltip" title="Sửa danh mục">
+                                    <i class="fas fa-pen-square mx-1 text-primary" style="font-size:1.5em; line-height:1em;"></i>
+                                </a>
+                                <a href="#" onclick="deleteCategory(${data})" data-toggle="tooltip" title="Xóa danh mục">
+                                    <i class="fas fa-trash-alt mx-1 text-danger" style="font-size:1.5em; line-height:1em;"></i>
+                                </a>`;
+                        },
+                        "className": "center"
+                    }
+                ]
+            });
+
+            window.deleteCategory = function (id) {
+                if (confirm("Bạn có chắc muốn xóa danh mục này?")) {
+                    $.ajax({
+                        url: "@Url.Action("DeleteConfirmed", "Category")",
+                        type: "POST",
+                        data: { id: id },
+                        success: function (response) {
+                            alert(response.message || "Xóa danh mục thành công!");
+                            if (response.success) {
+                                tblCategory.ajax.reload();
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            var message = xhr.responseJSON?.message || "Đã có lỗi xảy ra khi xóa danh mục.";
+                            alert("Lỗi: " + message + " (Trạng thái: " + status + ")");
+                        }
+                    });
+                }
+            };
+        });
+    </script>
+}
