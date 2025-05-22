@@ -4,6 +4,7 @@ using Mio.ELearning.Core.ViewModels;
 using Mio.ELearning.Service.Services;
 
 namespace Mio.ELearning.AdminSite.Controllers;
+
 [Area("Category")]
 public class CategoryController : Controller
 {
