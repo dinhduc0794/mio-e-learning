@@ -5,26 +5,27 @@
 
 <div class="main-content">
     <div class="main-content-inner">
-        <div class="breadcrumbs" id="breadcrumbs">
-            <ul class="breadcrumb">
-                <li>
-                    <i class="ace-icon fa fa-home home-icon"></i>
-                    <a asp-controller="Home" asp-action="Index">Trang chủ</a>
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item">
+                    <a asp-controller="Home" asp-action="Index">
+                        <i class="fas fa-home"></i> Trang chủ
+                    </a>
                 </li>
-                <li class="active">Danh sách khóa học</li>
-            </ul>
-        </div>
+                <li class="breadcrumb-item active">Danh sách khóa học</li>
+            </ol>
+        </nav>
 
         <div class="page-content">
-            <div class="page-header">
-                <h1 style="font-weight: bold;">Danh sách khóa học</h1>
+            <div class="page-header mb-4">
+                <h1 class="fw-bold">Danh sách khóa học</h1>
             </div>
 
             <div class="row">
-                <div class="col-xs-12">
-                    <div class="filter-container" style="margin-bottom: 20px;">
-                        <label for="categoryFilter">Lọc theo danh mục:</label>
-                        <select id="categoryFilter" class="form-control" style="display:inline-block; width:auto;">
+                <div class="col-12">
+                    <div class="filter-container mb-4">
+                        <label for="categoryFilter" class="form-label me-2">Lọc theo danh mục:</label>
+                        <select id="categoryFilter" class="form-select d-inline-block" style="width: auto;">
                             <option value="" selected="@(ViewBag.SelectedCategoryId == null ? "selected" : null)">Tất cả</option>
                             @foreach (var category in ViewBag.AllCategories)
                             {
@@ -35,10 +36,10 @@
                             }
                         </select>
                     </div>
-                    <div class="add-course-container text-end" style="margin-bottom: 20px;">
+                    <div class="text-end mb-4" >
                         <a href="@Url.Action("Create")">
                             <button class="btn btn-primary" title="Thêm khóa học">
-                                <i class="ace-icon fa fa-plus bigger-130"></i> Thêm khóa học
+                                <i class="fas fa-plus me-1"></i> Thêm khóa học
                             </button>
                         </a>
                     </div>
@@ -92,8 +93,8 @@
                 },
                 "autoWidth": true,
                 "responsive": true,
-                "ordering": false,
-                "pageLength": 10,
+                "ordering": true,
+                "pageLength": 2,
                 "lengthChange": false,
                 "searching": false,
                 ajax: {
@@ -101,7 +102,6 @@
                     method: 'GET',
                     data: function (d) {
                         var categoryId = $("#categoryFilter").val();
-                        // 👉 Nếu không chọn thì xoá khỏi request
                         if (categoryId) {
                             d.categoryId = parseInt(categoryId);
                         } else {
@@ -133,7 +133,7 @@
                         className: "text-center"
                     },
                     {
-                        data: "categoryName", // Sửa từ "category" thành "categoryName"
+                        data: "categoryName",
                         render: function (data) {
                             return data || "N/A";
                         },
@@ -147,21 +147,21 @@
                         className: "text-center"
                     },
                     {
-                        "data": "updatedAt",
+                        data: "updatedAt",
                         render: function (data) {
                             return data ? moment.tz(data, "Asia/Ho_Chi_Minh").format("DD/MM/YYYY HH:mm") : "N/A";
                         },
-                        "className": "center"
+                        className: "text-center"
                     },
                     {
                         data: "courseId",
                         render: function (data) {
                             return `
-                                <a href="@Url.Action("Edit")/${data}" title="Sửa khóa học">
-                                    <i class="fas fa-pen-square text-primary" style="font-size:1.4em;"></i>
-                                   </a>
-                                <a href="#" onclick="deleteCourse(${data})" title="Xóa khóa học">
-                                    <i class="fas fa-trash-alt text-danger mx-2" style="font-size:1.4em;"></i>
+                                <a href="@Url.Action("Edit")/${data}" title="Sửa khóa học" data-bs-toggle="tooltip">
+                                    <i class="fas fa-pen-square text-primary me-2" style="font-size:1.4em;"></i>
+                                </a>
+                                <a href="#" onclick="deleteCourse(${data})" title="Xóa khóa học" data-bs-toggle="tooltip">
+                                    <i class="fas fa-trash-alt text-danger" style="font-size:1.4em;"></i>
                                 </a>`;
                         },
                         className: "text-center"
@@ -182,7 +182,7 @@
                         success: function (response) {
                             if (response.success) {
                                 toastr.success("Xóa thành công!");
-                                tblCourse.ajax.reload(); 
+                                tblCourse.ajax.reload();
                             } else {
                                 toastr.error("Xóa thất bại: " + response.message);
                             }
@@ -193,7 +193,6 @@
                     });
                 }
             };
-            
         });
     </script>
 }

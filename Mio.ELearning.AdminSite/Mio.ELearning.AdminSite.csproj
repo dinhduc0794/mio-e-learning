@@ -9,6 +9,10 @@
     <ItemGroup>
       <_ContentIncludedByDefault Remove="Areas\Home\Views\Index.cshtml" />
       <_ContentIncludedByDefault Remove="Areas\Home\Views\Privacy.cshtml" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\datatables\css\datatables.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\datatables\css\datatables.min.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\datatables\js\datatables.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\datatables\js\datatables.min.js" />
     </ItemGroup>
 
     <ItemGroup>

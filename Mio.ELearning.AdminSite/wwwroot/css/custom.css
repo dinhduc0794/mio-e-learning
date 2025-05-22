@@ -374,42 +374,6 @@ form#form-task .form-group .col-xs-9 {
     max-width: 75%;
 }
 
-/* Add Task Button Styling */
-.btn-add-task {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 12px 24px;
-    margin-left: 16px;
-    margin-bottom: -12px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    background-color: #36bf76; /* Matches your theme */
-    color: #fff;
-    border: none;
-    border-radius: 12px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease;
-    text-transform: none;
-}
-
-.btn-add-task:hover {
-    background-color: #28a745;
-    transform: translateY(-3px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-    color: #fff;
-}
-
-.btn-add-task:active {
-    transform: translateY(0);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.btn-add-task i {
-    margin-right: 8px;
-    font-size: 1.3rem;
-}
-
 /* Container for the button */
 .add-task-container {
     position: relative;

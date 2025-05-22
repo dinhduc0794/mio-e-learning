@@ -5,27 +5,28 @@
 
 <div class="main-content">
     <div class="main-content-inner">
-        <div class="breadcrumbs" id="breadcrumbs">
-            <ul class="breadcrumb">
-                <li>
-                    <i class="ace-icon fa fa-home home-icon"></i>
-                    <a asp-controller="Home" asp-action="Index">Trang chủ</a>
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item">
+                    <a asp-controller="Home" asp-action="Index">
+                        <i class="fas fa-home"></i> Trang chủ
+                    </a>
                 </li>
-                <li class="active">Danh sách danh mục khóa học</li>
-            </ul>
-        </div>
+                <li class="breadcrumb-item active">Danh sách danh mục khóa học</li>
+            </ol>
+        </nav>
 
         <div class="page-content">
-            <div class="page-header">
-                <h1 style="font-weight: bold;">Danh sách danh mục khóa học</h1>
+            <div class="page-header mb-4">
+                <h1 class="fw-bold">Danh sách danh mục khóa học</h1>
             </div>
 
             <div class="row">
-                <div class="col-xs-12">
-                    <div class="add-task-container" style="margin-bottom: 20px;">
+                <div class="col-12">
+                    <div class="text-end mb-4">
                         <a href="@Url.Action("Form", new { id = 0 })">
-                            <button class="btn btn-add-task btn-primary" title="Thêm danh mục">
-                                <i class="ace-icon fa fa-plus bigger-130"></i> Thêm danh mục
+                            <button class="btn btn-primary" title="Thêm danh mục">
+                                <i class="fas fa-plus me-1"></i> Thêm danh mục
                             </button>
                         </a>
                     </div>
@@ -86,41 +87,41 @@
                         "render": function (data, type, row) {
                             return data || "N/A";
                         },
-                        "className": "center"
+                        "className": "text-center"
                     },
                     {
                         "data": "description",
                         "render": function (data, type, row) {
                             return data || "N/A";
                         },
-                        "className": "center"
+                        "className": "text-center"
                     },
                     {
                         "data": "createdAt",
                         "render": function (data, type, row) {
                             return moment(data).format('DD/MM/YYYY HH:mm');
                         },
-                        "className": "center"
+                        "className": "text-center"
                     },
                     {
                         "data": "updatedAt",
                         "render": function (data, type, row) {
                             return moment(data).format('DD/MM/YYYY HH:mm');
                         },
-                        "className": "center"
+                        "className": "text-center"
                     },
                     {
                         "data": "categoryId",
                         "render": function (data, type, row) {
                             return `
-                                <a href="/Category/Form/${data}" data-toggle="tooltip" title="Sửa danh mục">
+                                <a href="/Category/Form/${data}" data-bs-toggle="tooltip" title="Sửa danh mục">
                                     <i class="fas fa-pen-square mx-1 text-primary" style="font-size:1.5em; line-height:1em;"></i>
                                 </a>
-                                <a href="#" onclick="deleteCategory(${data})" data-toggle="tooltip" title="Xóa danh mục">
+                                <a href="#" onclick="deleteCategory(${data})" data-bs-toggle="tooltip" title="Xóa danh mục">
                                     <i class="fas fa-trash-alt mx-1 text-danger" style="font-size:1.5em; line-height:1em;"></i>
                                 </a>`;
                         },
-                        "className": "center"
+                        "className": "text-center"
                     }
                 ]
             });

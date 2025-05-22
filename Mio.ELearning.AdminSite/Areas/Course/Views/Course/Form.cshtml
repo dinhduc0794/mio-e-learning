@@ -12,9 +12,11 @@
 <div class="main-content">
     <div class="main-content-inner">
         <nav aria-label="breadcrumb" class="mb-4">
-            <ol class="breadcrumb">
+            <ol class="breadcrumb mb-0">
                 <li class="breadcrumb-item">
-                    <a asp-controller="Home" asp-action="Index"><i class="ace-icon fa fa-home home-icon"></i> Trang chủ</a>
+                    <a asp-controller="Home" asp-action="Index">
+                        <i class="fas fa-home"></i> Trang chủ
+                    </a>
                 </li>
                 <li class="breadcrumb-item">
                     <a asp-action="Index">Danh sách khóa học</a>
@@ -31,14 +33,14 @@
             @if (!string.IsNullOrEmpty(Model.ImageUrl))
             {
                 <div class="text-center image-container mb-4">
-                    <img src="@Model.ImageUrl" alt="Course Image" />
+                    <img src="@Model.ImageUrl" alt="Course Image" class="img-fluid" style="max-width: 300px;" />
                 </div>
             }
             <form asp-action="@action" method="post" id="course-form" enctype="multipart/form-data">
                 @if (!ViewData.ModelState.IsValid)
                 {
                     <div class="alert alert-danger">
-                        <ul>
+                        <ul class="mb-0">
                             @foreach (var item in ViewData.ModelState)
                             {
                                 foreach (var error in item.Value.Errors)
@@ -55,7 +57,7 @@
                     <input type="hidden" asp-for="CourseId" />
                 }
 
-                <div class="form-group row">
+                <div class="row mb-3">
                     <label asp-for="CourseName" class="col-sm-3 col-form-label">Tên khóa học</label>
                     <div class="col-sm-9">
                         <input asp-for="CourseName" class="form-control" required />
@@ -63,24 +65,24 @@
                     </div>
                 </div>
 
-                <div class="form-group row">
+                <div class="row mb-3">
                     <label asp-for="Description" class="col-sm-3 col-form-label">Mô tả</label>
                     <div class="col-sm-9">
                         <textarea asp-for="Description" class="form-control"></textarea>
                     </div>
                 </div>
 
-                <div class="form-group row">
+                <div class="row mb-3">
                     <label asp-for="CategoryId" class="col-sm-3 col-form-label">Danh mục</label>
                     <div class="col-sm-9">
-                        <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.AllCategories">
+                        <select asp-for="CategoryId" class="form-select" asp-items="ViewBag.AllCategories">
                             <option value="">-- Chọn danh mục --</option>
                         </select>
                         <span asp-validation-for="CategoryId" class="text-danger"></span>
                     </div>
                 </div>
 
-                <div class="form-group row">
+                <div class="row mb-3">
                     <label class="col-sm-3 col-form-label">Ảnh khóa học</label>
                     <div class="col-sm-9">
                         <input type="file" name="ImageFile" class="form-control" accept="image/*" />
@@ -90,11 +92,11 @@
 
                 <hr class="my-4" />
 
-                <div class="form-group">
+                <div class="mb-3">
                     <label class="form-label fw-bold">Học phần</label>
                     <div id="sections-container" class="mb-3"></div>
-                    <button type="button" class="btn btn-success btn-add-task" id="add-section">
-                        <i class="fa fa-plus"></i> Thêm phần
+                    <button type="button" class="btn btn-success" id="add-section">
+                        <i class="fas fa-plus me-1"></i> Thêm phần
                     </button>
                 </div>
 
@@ -109,10 +111,7 @@
     </div>
 </div>
 
-
-
 @section Scripts {
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(function () {
             let sectionIndex = @Model.Sections?.Count ?? 0;
@@ -121,39 +120,38 @@
             function createLessonForm(sectionIdx, lessonIdx, lesson = {}) {
                 return `
             <div class="lesson-item card mt-2 p-3">
-                <div class="d-flex justify-content-between">
+                <div class="d-flex justify-content-between align-items-center">
                     <strong>Bài học ${lessonIdx + 1}: ${lesson.LessonName || ''}</strong>
                     <button type="button" class="btn btn-danger btn-sm remove-lesson">Xóa bài học</button>
                 </div>
                 <input type="hidden" name="Sections[${sectionIdx}].Lessons[${lessonIdx}].LessonId" value="${lesson.LessonId || 0}" />
                 <input type="hidden" name="Sections[${sectionIdx}].Lessons[${lessonIdx}].Order" value="${lesson.Order || lessonIdx + 1}" />
     
-                <div class="form-group mt-2">
-                    <label>Tên bài học</label>
+                <div class="mt-2">
+                    <label class="form-label">Tên bài học</label>
                     <input name="Sections[${sectionIdx}].Lessons[${lessonIdx}].LessonName" class="form-control" value="${lesson.LessonName || ''}" required />
                 </div>
     
-                <div class="form-group">
-                    <label>Nội dung</label>
+                <div class="mt-2">
+                    <label class="form-label">Nội dung</label>
                     <textarea name="Sections[${sectionIdx}].Lessons[${lessonIdx}].Content" class="form-control">${lesson.Content || ''}</textarea>
                 </div>
     
-                <div class="form-group">
-                    <label>Video</label>
+                <div class="mt-2">
+                    <label class="form-label">Video</label>
                     <input type="file" name="Sections[${sectionIdx}].Lessons[${lessonIdx}].VideoFile" class="form-control" accept="video/*" />
                     <input type="hidden" name="Sections[${sectionIdx}].Lessons[${lessonIdx}].VideoUrl" value="${lesson.VideoUrl || ''}" />
-                    ${lesson.VideoUrl ? `<video src="${lesson.VideoUrl}" controls style="max-width: 200px; margin-top: 10px;"></video>` : ''}
+                    ${lesson.VideoUrl ? `<video src="${lesson.VideoUrl}" controls class="mt-2" style="max-width: 200px;"></video>` : ''}
                 </div>
     
-                <div class="form-group">
-                    <label>Tài liệu</label>
+                <div class="mt-2">
+                    <label class="form-label">Tài liệu</label>
                     <input type="file" name="Sections[${sectionIdx}].Lessons[${lessonIdx}].DocumentFile" class="form-control" accept=".pdf,.doc,.docx" />
                     <input type="hidden" name="Sections[${sectionIdx}].Lessons[${lessonIdx}].DocumentUrl" value="${lesson.DocumentUrl || ''}" />
-                    ${lesson.DocumentUrl ? `<a href="${lesson.DocumentUrl}" target="_blank">Xem tài liệu</a>` : ''}
+                    ${lesson.DocumentUrl ? `<a href="${lesson.DocumentUrl}" target="_blank" class="d-block mt-2">Xem tài liệu</a>` : ''}
                 </div>
             </div>`;
             }
-
 
             function createSectionForm(section, i) {
                 let lessonHtml = "";
@@ -164,24 +162,28 @@
 
                 return `
                     <div class="section-item card mt-3 p-3 border-primary" data-section-index="${i}">
-                        <div class="card-header bg-primary text-white d-flex justify-content-between">
+                        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
                             <strong>Phần ${i + 1}: ${section.SectionName || ''}</strong>
                             <button type="button" class="btn btn-light btn-sm remove-section">Xóa phần</button>
                         </div>
-                        <input type="hidden" name="Sections[${i}].SectionId" value="${section.SectionId || 0}" />
-                        <input type="hidden" name="Sections[${i}].Order" value="${section.Order || i + 1}" />
-                        <div class="form-group mt-2">
-                            <label>Tên phần</label>
-                            <input name="Sections[${i}].SectionName" class="form-control" value="${section.SectionName || ''}" required />
+                        <div class="card-body">
+                            <input type="hidden" name="Sections[${i}].SectionId" value="${section.SectionId || 0}" />
+                            <input type="hidden" name="Sections[${i}].Order" value="${section.Order || i + 1}" />
+                            <div class="mb-2">
+                                <label class="form-label">Tên phần</label>
+                                <input name="Sections[${i}].SectionName" class="form-control" value="${section.SectionName || ''}" required />
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label">Mô tả</label>
+                                <textarea name="Sections[${i}].Description" class="form-control">${section.Description || ''}</textarea>
+                            </div>
+                            <div class="lessons-container" data-section-index="${i}">
+                                ${lessonHtml}
+                            </div>
+                            <button type="button" class="btn btn-outline-primary btn-sm add-lesson mt-2" data-section-index="${i}">
+                                <i class="fas fa-plus me-1"></i> Thêm bài học
+                            </button>
                         </div>
-                        <div class="form-group">
-                            <label>Mô tả</label>
-                            <textarea name="Sections[${i}].Description" class="form-control">${section.Description || ''}</textarea>
-                        </div>
-                        <div class="lessons-container" data-section-index="${i}">
-                            ${lessonHtml}
-                        </div>
-                        <button type="button" class="btn btn-outline-primary btn-sm add-lesson mt-2" data-section-index="${i}">+ Thêm bài học</button>
                     </div>`;
             }
 
@@ -219,10 +221,10 @@
                     const reader = new FileReader();
                     reader.onload = function (event) {
                         if (input.accept.includes('image')) {
-                            const img = $('<img>').attr('src', event.target.result).css({ 'max-width': '200px', 'margin-top': '10px' });
+                            const img = $('<img>').attr('src', event.target.result).addClass('mt-2').css({ 'max-width': '200px' });
                             previewContainer.replaceWith(img);
                         } else if (input.accept.includes('video')) {
-                            const video = $('<video>').attr('src', event.target.result).attr('controls', true).css({ 'max-width': '200px', 'margin-top': '10px' });
+                            const video = $('<video>').attr('src', event.target.result).attr('controls', true).addClass('mt-2').css({ 'max-width': '200px' });
                             previewContainer.replaceWith(video);
                         }
                     };

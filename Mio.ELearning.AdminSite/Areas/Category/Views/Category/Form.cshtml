@@ -7,57 +7,58 @@
 
 <div class="main-content">
     <div class="main-content-inner">
-        <div class="breadcrumbs" id="breadcrumbs">
-            <ul class="breadcrumb">
-                <li>
-                    <i class="ace-icon fa fa-home home-icon"></i>
-                    <a asp-controller="Home" asp-action="Index">Trang chủ</a>
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item">
+                    <a asp-controller="Home" asp-action="Index">
+                        <i class="fas fa-home"></i> Trang chủ
+                    </a>
                 </li>
-                <li>
+                <li class="breadcrumb-item">
                     <a asp-action="Index">Danh sách danh mục khóa học</a>
                 </li>
-                <li class="active">@ViewData["Title"]</li>
-            </ul>
-        </div>
+                <li class="breadcrumb-item active">@ViewData["Title"]</li>
+            </ol>
+        </nav>
 
         <div class="page-content">
-            <div class="page-header">
-                <h1 style="font-weight: bold;">@ViewData["Title"]</h1>
+            <div class="page-header mb-4">
+                <h1 class="fw-bold">@ViewData["Title"]</h1>
             </div>
 
             <div class="row">
-                <div class="col-xs-12">
+                <div class="col-12">
                     <form asp-action="@action" method="post" id="form-category">
                         @if (isEdit)
                         {
                             <input type="hidden" asp-for="CategoryId" />
                         }
-                        <div class="form-group">
-                            <label class="col-xs-3">Tên danh mục</label>
-                            <div class="col-xs-9">
+                        <div class="row mb-3">
+                            <label class="col-sm-3 col-form-label">Tên danh mục</label>
+                            <div class="col-sm-9">
                                 <input asp-for="Name" class="form-control" required />
                                 <span asp-validation-for="Name" class="text-danger"></span>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-xs-3">Mô tả</label>
-                            <div class="col-xs-9">
+                        <div class="row mb-3">
+                            <label class="col-sm-3 col-form-label">Mô tả</label>
+                            <div class="col-sm-9">
                                 <textarea asp-for="Description" class="form-control"></textarea>
                             </div>
                         </div>
                         @if (isEdit)
                         {
-                            <div class="form-group">
-                                <label class="col-xs-3">Ngày tạo</label>
-                                <div class="col-xs-9">
+                            <div class="row mb-3">
+                                <label class="col-sm-3 col-form-label">Ngày tạo</label>
+                                <div class="col-sm-9">
                                     <input value="@Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")" class="form-control" disabled />
                                 </div>
                             </div>
                         }
-                        <div class="form-group" style="margin-top: 48px;">
-                            <label class="col-xs-3"></label>
-                            <div class="col-xs-9">
-                                <button type="submit" class="btn btn-primary">
+                        <div class="row mb-3">
+                            <div class="col-sm-3"></div>
+                            <div class="col-sm-9">
+                                <button type="submit" class="btn btn-primary me-2">
                                     @(isEdit ? "Lưu thay đổi" : "Thêm danh mục")
                                 </button>
                                 <a asp-action="Index" class="btn btn-warning">Quay lại</a>
