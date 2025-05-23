@@ -20,5 +20,10 @@
       <ProjectReference Include="..\Mio.ELearning.Core\Mio.ELearning.Core.csproj" />
       <ProjectReference Include="..\Mio.ELearning.Data\Mio.ELearning.Data.csproj" />
     </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.4">
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+    </ItemGroup>
 
 </Project>
