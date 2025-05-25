@@ -1,0 +1,15 @@
+﻿:root {
+    --primary-color: #a065c9;        
+    --primary-hover: #b07bd4;         
+    --sidebar-bg: var(--primary-color);
+    --sidebar-hover: var(--primary-hover);
+    --widget-header-bg: var(--primary-color);
+    --breadcrumb-link: var(--primary-color);
+    --breadcrumb-hover: var(--primary-hover);
+    --btn-primary: var(--primary-color);
+    --btn-hover: var(--primary-hover);
+    --table-header-bg: var(--primary-color);
+    --paginate-color: var(--primary-color);
+    --paginate-hover: var(--primary-hover);
+    --form-focus-shadow: rgba(160, 101, 201, 0.3);
+}

@@ -1,0 +1,63 @@
+/* Buttons */
+.btn-primary,
+.btn-warning,
+.btn-secondary,
+.btn-app {
+    border: none;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    border-radius: 8px;
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+.btn-primary:hover,
+.btn-app:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn-primary:active,
+.btn-app:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-warning {
+    background-color: var(--warning);
+    color: #333;
+}
+
+.btn-warning:hover {
+    background-color: #e0a800;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn-app {
+    padding: 8px;
+    font-size: 12px;
+    line-height: 1;
+}
+
+.btn.btn-app.btn-primary.btn-sm {
+    padding: 12px 20px;
+    font-size: 1rem;
+    background-color: var(--primary-color);
+    border-radius: 8px;
+    border: none;
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+    transition: all 0.3s ease;
+    position: absolute;
+    top: -60px;
+    right: 0;
+    z-index: 1050;
+}
+
+.btn.btn-app.btn-primary.btn-sm:hover {
+    background-color: var(--primary-hover);
+    transform: scale(1.05);
+}

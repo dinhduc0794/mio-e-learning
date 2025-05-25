@@ -1,0 +1,85 @@
+/* Forms */
+.form-group {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.form-group label {
+    width: 25%;
+    font-weight: 600;
+    color: #555;
+    transition: all 0.3s ease;
+}
+
+.form-group .col-xs-9 {
+    width: 75%;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    box-sizing: border-box;
+    padding: 10px 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: #36bf76;
+    box-shadow: 0 0 5px rgba(54, 191, 118, 0.3);
+    outline: none;
+}
+
+.form-group input:invalid:not(:placeholder-shown),
+.form-group select:invalid,
+.form-group textarea:invalid:not(:placeholder-shown) {
+    border-color: #dc3545;
+}
+
+.form-group .text-danger {
+    font-size: 0.85rem;
+    color: #dc3545;
+    margin-top: 5px;
+    display: block;
+}
+
+/* Form Inputs và Dropdown rộng toàn cột */
+form#form-task .form-group .form-control {
+    width: 100% !important;
+    max-width: none;
+    box-sizing: border-box;
+}
+
+/* Dropdown rộng hơn để không bị che chữ */
+form#form-task select.form-control {
+    min-width: 100%;
+    padding-right: 32px; /* phòng trường hợp có scrollbar */
+}
+
+/* Đảm bảo input datetime-local trông đồng bộ */
+form#form-task input[type="datetime-local"] {
+    width: 100% !important;
+}
+
+/* Căn chỉnh lại lề giữa label và input */
+form#form-task .form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+form#form-task .form-group label {
+    flex: 0 0 25%;
+    max-width: 25%;
+    font-weight: 500;
+}
+
+form#form-task .form-group .col-xs-9 {
+    flex: 1;
+    max-width: 75%;
+}

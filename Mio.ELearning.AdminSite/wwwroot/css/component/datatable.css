@@ -1,0 +1,58 @@
+
+
+/* Tables (Including DataTables) */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    background-color: #fff;
+}
+
+.table th,
+.table td {
+    padding: 12px;
+    text-align: center; /* Centered as per Task/Category Index.cshtml */
+    border-bottom: 1px solid #ddd;
+}
+
+.table th {
+    background-color: var(--primary-color)!important;
+    color: #fff;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.table-striped>tbody>tr:nth-of-type(odd) {
+    background-color: #f9f9f9;
+}
+
+.table-hover>tbody>tr:hover {
+    background-color: #f1f1f1;
+}
+
+
+/* DataTables Specific */
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    color: var(--primary-color) !important;
+    border: none;
+    background: none;
+    padding: 5px 10px;
+    margin: 0 2px;
+    border-radius: 4px;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background-color: var(--primary-color) !important;
+    color: #fff !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background-color: var(--primary-color) !important;
+    color: #fff !important;
+}
+
+.dataTables_wrapper .dataTables_processing {
+    color: var(--primary-color);
+    font-weight: bold;
+}

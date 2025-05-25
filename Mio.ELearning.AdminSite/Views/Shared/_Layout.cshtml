@@ -11,68 +11,70 @@
     <link rel="stylesheet" href="~/lib/fontawesome/css/all.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Mio.ELearning.AdminSite.styles.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/custom.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/custom.css?v=1" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/theme.css?v=1" asp-append-version="true" />
 </head>
 <body>
-<header>
-    <nav class="navbar navbar-expand-lg shadow-sm">
-        <div class="container-fluid">
-            <a class="navbar-brand fw-bold text-white" asp-area="" asp-controller="Home" asp-action="Index">🎓 Mio ELearning</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index">Trang chủ</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Category" ? "active" : "")"
-                           asp-area="Category" asp-controller="Category" asp-action="Index">Danh mục</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-white" href="#" id="navbarCategoryDropdown"
-                           role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Khóa học
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarCategoryDropdown">
-                            <li>
-                                <a class="dropdown-item" asp-area="Course" asp-controller="Course" asp-action="Index">
-                                    Tất cả khóa học
-                                </a>
-                            </li>
-                            @if (ViewBag.AllCategories is List<SelectListItem> categories)
-                            {
-                                foreach (var category in categories)
-                                {
-                                    <li>
-                                        <a class="dropdown-item" asp-area="Course" asp-controller="Course" asp-action="Index" asp-route-categoryId="@category.Value">
-                                            @category.Text
-                                        </a>
-                                    </li>
-                                }
-                            }
-                        </ul>
-                    </li>
-                </ul>
+<div class="wrapper">
+    <div class="d-flex" id="wrapper">
+        <!-- Sidebar -->
+        <div class="collapse" id="sidebar-wrapper">
+            <div class="sidebar-content">
+                <div class="sidebar-heading text-white fw-bold px-3 py-4">🎓 Mio E-Learning</div>
+                <div class="list-group list-group-flush flex-grow-1 sidebar">
+                    <!-- Trang chủ -->
+                    <a asp-area="" asp-controller="Home" asp-action="Index"
+                       class="list-group-item list-group-item-action text-white p-3"
+                       data-controller="Home" data-action="Index" data-area="">
+                        <i class="fas fa-home me-2"></i> Trang chủ
+                    </a>
+
+                    <!-- Danh mục -->
+                    <a asp-area="Category" asp-controller="Category" asp-action="Index"
+                       class="list-group-item list-group-item-action text-white p-3"
+                       data-controller="Category" data-action="Index" data-area="Category">
+                        <i class="fas fa-folder me-2"></i> Danh mục
+                    </a>
+
+                    <!-- Khóa học -->
+                    <a asp-area="Course" asp-controller="Course" asp-action="Index"
+                       class="list-group-item list-group-item-action text-white p-3"
+                       data-controller="Course" data-action="Index" data-area="Course" data-category-id="">
+                        <i class="fas fa-graduation-cap me-2"></i> Khóa học
+                    </a>
+                </div>
             </div>
         </div>
-    </nav>
-</header>
 
-<div class="container">
-    <main role="main" class="pb-3">
-        @RenderBody()
-    </main>
-</div>
+        <!-- Page content wrapper -->
+        <div id="page-content-wrapper" class="d-flex flex-column flex-grow-1">
+            <!-- Top navigation with sidebar toggle -->
+            <nav class="navbar navbar-light bg-light border-bottom">
+                <div class="container-fluid">
+                    <button class="btn btn-outline-secondary" id="sidebarToggle" data-bs-toggle="collapse" data-bs-target="#sidebar-wrapper" aria-controls="sidebar-wrapper" aria-expanded="false" aria-label="Toggle navigation">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <span class="navbar-brand ms-2">Admin Site</span>
+                </div>
+            </nav>
 
-<footer class="border-top footer text-muted mt-4">
-    <div class="container">
-        &copy; 2025 - Mio ELearning -
-        <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <!-- Page content -->
+            <div class="container-fluid p-4 flex-grow-1">
+                <main role="main">
+                    @RenderBody()
+                </main>
+            </div>
+
+            <footer class="footer border-top py-3 bg-light">
+                <div class="container">
+                    <div class="text-center">
+                        © 2025 - Mio E-Learning - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                    </div>
+                </div>
+            </footer>
+        </div>
     </div>
-</footer>
+</div>
 
 <!-- Scripts -->
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -84,6 +86,57 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.40/moment-timezone-with-data.min.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>
+
+<!-- Sidebar Toggle and Active State Script -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Debug: Kiểm tra Bootstrap collapse
+        console.log('Bootstrap Collapse loaded:', typeof bootstrap !== 'undefined' && typeof bootstrap.Collapse !== 'undefined');
+
+        // Initialize collapse state for sidebar on mobile
+        const sidebar = document.getElementById('sidebar-wrapper');
+        if (window.innerWidth <= 768) {
+            bootstrap.Collapse.getOrCreateInstance(sidebar).hide();
+        } else {
+            bootstrap.Collapse.getOrCreateInstance(sidebar).show();
+        }
+
+        // Đóng sidebar trên mobile khi bấm vào mục
+        const sidebarItems = document.querySelectorAll('.sidebar .list-group-item');
+        sidebarItems.forEach(item => {
+            item.addEventListener('click', function() {
+                if (window.innerWidth <= 768) {
+                    console.log('Closing sidebar on mobile');
+                    bootstrap.Collapse.getInstance(sidebar).hide();
+                }
+            });
+        });
+
+        // Set active menu item based on current URL
+        setActiveSidebarItem();
+    });
+    
+    // Toggle sidebar on button click
+    $(document).ready(function() {
+        $("#sidebarToggle").on("click", function(e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+            console.log("Toggle clicked"); // For debugging
+        });
+
+        // Handle responsive behavior
+        $(window).resize(function() {
+            if ($(window).width() <= 768) {
+                $("#wrapper").addClass("toggled");
+            } else {
+                $("#wrapper").removeClass("toggled");
+            }
+        });
+    });
+
+    
+</script>
+
 @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

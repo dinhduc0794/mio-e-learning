@@ -19,18 +19,18 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var result = await _categoryService.GetAllCategoriesAsync();
-
-        if (result.IsSuccess && result.Data != null)
-        {
-            ViewBag.AllCategories = result.Data
-                .Select(c => new SelectListItem
-                {
-                    Value = c.CategoryId.ToString(),
-                    Text = c.Name
-                })
-                .ToList();
-        }
+        // var result = await _categoryService.GetAllCategoriesAsync();
+        //
+        // if (result.IsSuccess && result.Data != null)
+        // {
+        //     ViewBag.AllCategories = result.Data
+        //         .Select(c => new SelectListItem
+        //         {
+        //             Value = c.CategoryId.ToString(),
+        //             Text = c.Name
+        //         })
+        //         .ToList();
+        // }
 
         return View();
     }
