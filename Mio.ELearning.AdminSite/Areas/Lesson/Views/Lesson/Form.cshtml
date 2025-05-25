@@ -1,7 +1,8 @@
-@model Mio.ELearning.Core.ViewModels.CategoryViewModel
+@model Mio.ELearning.Core.ViewModels.LessonViewModel
+
 @{
-    var isEdit = Model.CategoryId != 0;
-    ViewData["Title"] = isEdit ? "Chỉnh sửa danh mục khóa học" : "Thêm danh mục khóa học";
+    var isEdit = Model.LessonId > 0;
+    ViewData["Title"] = isEdit ? "Chỉnh sửa bài học" : "Thêm bài học";
     var action = isEdit ? "Edit" : "Create";
 }
 
@@ -15,63 +16,162 @@
                     </a>
                 </li>
                 <li class="breadcrumb-item">
-                    <a asp-action="Index">Danh sách danh mục khóa học</a>
+                    <a asp-action="Index">Danh sách bài học</a>
                 </li>
-                <li class="breadcrumb-item active">@ViewData["Title"]</li>
+                <li class="breadcrumb-item active" aria-current="page">@ViewData["Title"]</li>
             </ol>
         </nav>
 
-        <div class="page-content">
-            <div class="page-header mb-4">
-                <h1 class="fw-bold">@ViewData["Title"]</h1>
+        <div class="card shadow-sm p-4">
+            <div class="text-center mb-4">
+                <h2 class="fw-bold">@ViewData["Title"]</h2>
             </div>
 
-            <div class="row">
-                <div class="col-12">
-                    <form asp-action="@action" method="post" id="form-category">
-                        @if (isEdit)
-                        {
-                            <input type="hidden" asp-for="CategoryId" />
-                        }
-                        <div class="row mb-3">
-                            <label class="col-sm-3 col-form-label">Tên danh mục</label>
-                            <div class="col-sm-9">
-                                <input asp-for="Name" class="form-control" required />
-                                <span asp-validation-for="Name" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <label class="col-sm-3 col-form-label">Mô tả</label>
-                            <div class="col-sm-9">
-                                <textarea asp-for="Description" class="form-control"></textarea>
-                            </div>
-                        </div>
-                        @if (isEdit)
-                        {
-                            <div class="row mb-3">
-                                <label class="col-sm-3 col-form-label">Ngày tạo</label>
-                                <div class="col-sm-9">
-                                    <input value="@Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")" class="form-control" disabled />
-                                </div>
-                            </div>
-                        }
-                        <div class="row mb-3">
-                            <div class="col-sm-3"></div>
-                            <div class="col-sm-9">
-                                <button type="submit" class="btn btn-primary me-2">
-                                    @(isEdit ? "Lưu thay đổi" : "Thêm danh mục")
-                                </button>
-                                <a asp-action="Index" class="btn btn-warning">Quay lại</a>
-                            </div>
-                        </div>
-                    </form>
+            <form asp-action="@action" method="post" id="lesson-form" enctype="multipart/form-data">
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">
+                            @foreach (var item in ViewData.ModelState)
+                            {
+                                foreach (var error in item.Value.Errors)
+                                {
+                                    <li><strong>@item.Key:</strong> @error.ErrorMessage</li>
+                                }
+                            }
+                        </ul>
+                    </div>
+                }
+
+                @if (isEdit)
+                {
+                    <input type="hidden" asp-for="LessonId" />
+                }
+
+                <div class="row mb-3">
+                    <label asp-for="LessonName" class="col-sm-3 col-form-label">Tên bài học</label>
+                    <div class="col-sm-9">
+                        <input asp-for="LessonName" class="form-control" required />
+                        <span asp-validation-for="LessonName" class="text-danger"></span>
+                    </div>
                 </div>
-            </div>
+
+                <div class="row mb-3">
+                    <label asp-for="Description" class="col-sm-3 col-form-label">Mô tả</label>
+                    <div class="col-sm-9">
+                        <textarea asp-for="Description" class="form-control"></textarea>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label asp-for="Content" class="col-sm-3 col-form-label">Nội dung</label>
+                    <div class="col-sm-9">
+                        <textarea asp-for="Content" class="form-control"></textarea>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label asp-for="VideoUrl" class="col-sm-3 col-form-label">Video</label>
+                    <div class="col-sm-9">
+                        <input type="file" name="VideoFile" class="form-control" accept="video/*" />
+                        <input type="hidden" asp-for="VideoUrl" />
+                        @if (!string.IsNullOrEmpty(Model.VideoUrl))
+                        {
+                            <video src="@Model.VideoUrl" controls class="mt-2" style="max-width: 200px;"></video>
+                        }
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label asp-for="DocumentUrl" class="col-sm-3 col-form-label">Tài liệu</label>
+                    <div class="col-sm-9">
+                        <input type="file" name="DocumentFile" class="form-control" accept=".pdf,.doc,.docx" />
+                        <input type="hidden" asp-for="DocumentUrl" />
+                        @if (!string.IsNullOrEmpty(Model.DocumentUrl))
+                        {
+                            <a href="@Model.DocumentUrl" target="_blank" class="d-block mt-2">Xem tài liệu</a>
+                        }
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label asp-for="SectionId" class="col-sm-3 col-form-label">Học phần</label>
+                    <div class="col-sm-9">
+                        <select asp-for="SectionId" class="form-select" asp-items="ViewBag.AllSections">
+                            <option value="">-- Chọn học phần --</option>
+                        </select>
+                        <span asp-validation-for="SectionId" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label asp-for="Order" class="col-sm-3 col-form-label">Thứ tự</label>
+                    <div class="col-sm-9">
+                        <input asp-for="Order" class="form-control" type="number" min="1" required />
+                        <span asp-validation-for="Order" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="text-end mt-4">
+                    <button type="submit" class="btn btn-primary me-2">
+                        @(isEdit ? "Lưu thay đổi" : "Thêm bài học")
+                    </button>
+                    <a asp-action="Index" class="btn btn-warning">Quay lại</a>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 
 @section Scripts {
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        $(function () {
+            $('#lesson-form').on('submit', function (e) {
+                e.preventDefault();
+                if (!$(this).valid()) {
+                    alert('Vui lòng kiểm tra các trường bắt buộc.');
+                    return;
+                }
+
+                const form = $(this);
+                const actionUrl = form.attr('action');
+                const formData = new FormData(form[0]);
+
+                $.ajax({
+                    url: actionUrl,
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        console.log("AJAX success:", response);
+                        if (response.success) {
+                            alert(response.message);
+                            window.location.href = "@Url.Action("Index")";
+                        } else {
+                            let errorMessage = 'Lỗi: ' + (response.message || 'Có lỗi xảy ra.') + '\n';
+                            if (response.errors && Array.isArray(response.errors)) {
+                                errorMessage += 'Chi tiết:\n';
+                                response.errors.forEach(error => {
+                                    // Safely handle error.Errors
+                                    const errorsList = error.Errors && Array.isArray(error.Errors) ? error.Errors.join(', ') : 'Không xác định';
+                                    errorMessage += `- ${error.Field}: ${errorsList}\n`;
+                                });
+                            }
+                            alert(errorMessage);
+                        }
+                    },
+                    error: function (xhr) {
+                        console.log("AJAX error:", xhr);
+                        alert('Lỗi kết nối đến máy chủ: ' + (xhr.responseJSON?.message || 'Lỗi không xác định'));
+                    }
+                });
+            });
+
+            $.validator.unobtrusive.parse('#lesson-form');
+        });
+    </script>
 }

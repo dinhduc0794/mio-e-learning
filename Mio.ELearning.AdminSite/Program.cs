@@ -49,6 +49,7 @@ public class Program
         builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
         builder.Services.AddScoped<ICourseService, CourseService>();
         builder.Services.AddScoped<ISectionService, SectionService>();
+        builder.Services.AddScoped<ILessonService, LessonService>();
         builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 

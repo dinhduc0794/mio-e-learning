@@ -1,6 +1,6 @@
-@model Mio.ELearning.Core.ViewModels.CategoryViewModel
+@model IEnumerable<Mio.ELearning.Core.ViewModels.LessonViewModel>
 @{
-    ViewData["Title"] = "Danh sách danh mục khóa học";
+    ViewData["Title"] = "Danh sách bài học";
 }
 
 <div class="main-content">
@@ -8,37 +8,59 @@
         <nav aria-label="breadcrumb" class="mb-4">
             <ol class="breadcrumb mb-0">
                 <li class="breadcrumb-item">
-                    <a asp-area=""  asp-controller="Home" asp-action="Index">
+                    <a asp-area="" asp-controller="Home" asp-action="Index">
                         <i class="fas fa-home"></i> Trang chủ
                     </a>
                 </li>
-                <li class="breadcrumb-item active">Danh sách danh mục khóa học</li>
+                <li class="breadcrumb-item active">Danh sách bài học</li>
             </ol>
         </nav>
 
         <div class="page-content">
             <div class="page-header mb-4">
-                <h1 class="fw-bold">Danh sách danh mục khóa học</h1>
+                <h1 class="fw-bold">Danh sách bài học</h1>
             </div>
 
             <div class="row">
                 <div class="col-12">
+                    <div class="filter-container mb-4">
+                        <label for="sectionFilter" class="form-label me-2">Lọc theo học phần:</label>
+                        <select id="sectionFilter" class="form-select d-inline-block" style="width: auto;">
+                            <option value="" selected="@(ViewBag.SelectedSectionId == null ? "selected" : null)">Tất cả</option>
+                            @foreach (var sect in ViewBag.AllSections)
+                            {
+                                <option value="@sect.Value"
+                                        selected="@(ViewBag.SelectedSectionId != null && ViewBag.SelectedSectionId.ToString() == sect.Value ? "selected" : null)">
+                                    @sect.Text
+                                </option>
+                            }
+                        </select>
+                    </div>
                     <div class="text-end mb-4 add" style="margin: -60px 0;">
-                        <a href="@Url.Action("Form", new { id = 0 })">
-                            <button class="btn btn-primary" title="Thêm danh mục" style="margin: 0">
-                                <i class="fas fa-plus me-1"></i> Thêm danh mục
+                        <a href="@Url.Action("Create")">
+                            <button class="btn btn-primary" title="Thêm bài học" style="margin: 0">
+                                <i class="fas fa-plus me-1"></i> Thêm bài học
                             </button>
                         </a>
                     </div>
                 </div>
             </div>
 
+            @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+            {
+                <div class="alert alert-danger">
+                    @ViewBag.ErrorMessage
+                </div>
+            }
+
             <div class="table-responsive">
-                <table id="categoryList" class="table table-striped table-bordered table-hover">
+                <table id="lessonList" class="table table-striped table-bordered table-hover">
                     <thead>
                     <tr>
-                        <th class="text-center">Tên danh mục</th>
+                        <th class="text-center">Tên bài học</th>
                         <th class="text-center">Mô tả</th>
+                        <th class="text-center">Học phần</th>
+                        <th class="text-center">Thứ tự</th>
                         <th class="text-center">Ngày tạo</th>
                         <th class="text-center">Ngày sửa</th>
                         <th class="text-center">Thao tác</th>
@@ -51,10 +73,10 @@
     </div>
 </div>
 
-@section Scripts {  
+@section Scripts {
     <script>
         $(document).ready(function () {
-            var tblCategory = $("#categoryList").DataTable({
+            var tblLesson = $("#lessonList").DataTable({
                 destroy: true,
                 serverSide: false,
                 processing: false,
@@ -76,50 +98,79 @@
                 pageLength: 5,
                 lengthChange: false,
                 searching: false,
-                ajax: {
-                    url: "@Url.Action("GetAllCategories", "Category")",
-                    method: "GET",
-                    dataSrc: "data"
-                },
                 paging: true,
+                ajax: {
+                    url: '@Url.Action("GetAllLessons", "Lesson")',
+                    method: 'GET',
+                    data: function (d) {
+                        var sectionId = $("#sectionFilter").val();
+                        if (sectionId) {
+                            d.sectionId = parseInt(sectionId);
+                        } else {
+                            delete d.sectionId;
+                        }
+                    },
+                    dataSrc: function (json) {
+                        console.log("AJAX response:", json);
+                        return json.data || [];
+                    },
+                    error: function (xhr, error, thrown) {
+                        console.log("AJAX error:", xhr, error, thrown);
+                        toastr.error("Lỗi khi tải dữ liệu: " + (xhr.responseJSON?.message || "Lỗi không xác định"));
+                    }
+                },
                 columns: [
                     {
-                        data: "name",
-                        render: function (data, type, row) {
+                        data: "lessonName",
+                        render: function (data) {
                             return data || "N/A";
                         },
                         className: "text-center"
                     },
                     {
                         data: "description",
-                        render: function (data, type, row) {
+                        render: function (data) {
+                            return data || "N/A";
+                        },
+                        className: "text-center"
+                    },
+                    {
+                        data: "sectionName",
+                        render: function (data) {
+                            return data || "N/A";
+                        },
+                        className: "text-center"
+                    },
+                    {
+                        data: "order",
+                        render: function (data) {
                             return data || "N/A";
                         },
                         className: "text-center"
                     },
                     {
                         data: "createdAt",
-                        render: function (data, type, row) {
-                            return moment(data).format('DD/MM/YYYY HH:mm');
+                        render: function (data) {
+                            return data ? moment.tz(data, "Asia/Ho_Chi_Minh").format("DD/MM/YYYY HH:mm") : "N/A";
                         },
                         className: "text-center"
                     },
                     {
                         data: "updatedAt",
-                        render: function (data, type, row) {
-                            return moment(data).format('DD/MM/YYYY HH:mm');
+                        render: function (data) {
+                            return data ? moment.tz(data, "Asia/Ho_Chi_Minh").format("DD/MM/YYYY HH:mm") : "N/A";
                         },
                         className: "text-center"
                     },
                     {
-                        data: "categoryId",
-                        render: function (data, type, row) {
+                        data: "lessonId",
+                        render: function (data) {
                             return `
-                                <a href="@Url.Action("Form")/${data}" data-bs-toggle="tooltip" title="Sửa danh mục">
-                                    <i class="fas fa-pen-square mx-1 text-primary" style="font-size:1.5em; line-height:1em;"></i>
+                                <a href="@Url.Action("Edit")/${data}" title="Sửa bài học" data-bs-toggle="tooltip">
+                                    <i class="fas fa-pen-square text-primary me-2" style="font-size:1.4em;"></i>
                                 </a>
-                                <a href="#" onclick="deleteCategory(${data})" data-bs-toggle="tooltip" title="Xóa danh mục">
-                                    <i class="fas fa-trash-alt mx-1 text-danger" style="font-size:1.5em; line-height:1em;"></i>
+                                <a href="#" onclick="deleteLesson(${data})" title="Xóa bài học" data-bs-toggle="tooltip">
+                                    <i class="fas fa-trash-alt text-danger" style="font-size:1.4em;"></i>
                                 </a>`;
                         },
                         className: "text-center"
@@ -127,21 +178,26 @@
                 ]
             });
 
-            window.deleteCategory = function (id) {
-                if (confirm("Bạn có chắc muốn xóa danh mục này?")) {
+            $("#sectionFilter").change(function () {
+                tblLesson.ajax.reload();
+            });
+
+            window.deleteLesson = function (id) {
+                if (confirm("Bạn có chắc muốn xóa bài học này?")) {
                     $.ajax({
-                        url: "@Url.Action("DeleteConfirmed", "Category")",
+                        url: '@Url.Action("Delete", "Lesson")',
                         type: "POST",
                         data: { id: id },
                         success: function (response) {
-                            alert(response.message || "Xóa danh mục thành công!");
                             if (response.success) {
-                                tblCategory.ajax.reload();
+                                toastr.success("Xóa thành công!");
+                                tblLesson.ajax.reload();
+                            } else {
+                                toastr.error("Xóa thất bại: " + response.message);
                             }
                         },
-                        error: function (xhr, status, error) {
-                            var message = xhr.responseJSON?.message || "Đã có lỗi xảy ra khi xóa danh mục.";
-                            alert("Lỗi: " + message + " (Trạng thái: " + status + ")");
+                        error: function (xhr) {
+                            toastr.error("Đã có lỗi xảy ra: " + (xhr.responseJSON?.message || "Lỗi không xác định"));
                         }
                     });
                 }

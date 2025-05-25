@@ -33,5 +33,5 @@ public class LessonViewModel : BaseModel
 
     public int Order { get; set; }
     public int SectionId { get; set; }
-    public string SectionName { get; set; }
+    public string? SectionName { get; set; }
 }
