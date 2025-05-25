@@ -1,0 +1,125 @@
+@model Mio.ELearning.Core.ViewModels.SectionViewModel
+
+@{
+    var isEdit = Model.SectionId > 0;
+    ViewData["Title"] = isEdit ? "Chỉnh sửa học phần" : "Thêm học phần";
+    var action = isEdit ? "Edit" : "Create";
+}
+
+<div class="main-content">
+    <div class="main-content-inner">
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item">
+                    <a asp-area="" asp-controller="Home" asp-action="Index">
+                        <i class="fas fa-home"></i> Trang chủ
+                    </a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a asp-action="Index">Danh sách học phần</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">@ViewData["Title"]</li>
+            </ol>
+        </nav>
+
+        <div class="card shadow-sm p-4">
+            <div class="text-center mb-4">
+                <h2 class="fw-bold">@ViewData["Title"]</h2>
+            </div>
+
+            <form asp-action="@action" method="post" id="section-form">
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">
+                            @foreach (var item in ViewData.ModelState)
+                            {
+                                foreach (var error in item.Value.Errors)
+                                {
+                                    <li><strong>@item.Key:</strong> @error.ErrorMessage</li>
+                                }
+                            }
+                        </ul>
+                    </div>
+                }
+
+                @if (isEdit)
+                {
+                    <input type="hidden" asp-for="SectionId" />
+                }
+
+                <div class="row mb-3">
+                    <label asp-for="SectionName" class="col-sm-3 col-form-label">Tên học phần</label>
+                    <div class="col-sm-9">
+                        <input asp-for="SectionName" class="form-control" required />
+                        <span asp-validation-for="SectionName" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label asp-for="Description" class="col-sm-3 col-form-label">Mô tả</label>
+                    <div class="col-sm-9">
+                        <textarea asp-for="Description" class="form-control"></textarea>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label asp-for="CourseId" class="col-sm-3 col-form-label">Khóa học</label>
+                    <div class="col-sm-9">
+                        <select asp-for="CourseId" class="form-select" asp-items="ViewBag.AllCourses">
+                            <option value="">-- Chọn khóa học --</option>
+                        </select>
+                        <span asp-validation-for="CourseId" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label asp-for="Order" class="col-sm-3 col-form-label">Thứ tự</label>
+                    <div class="col-sm-9">
+                        <input asp-for="Order" class="form-control" type="number" min="1" required />
+                        <span asp-validation-for="Order" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="text-end mt-4">
+                    <button type="submit" class="btn btn-primary me-2">
+                        @(isEdit ? "Lưu thay đổi" : "Thêm học phần")
+                    </button>
+                    <a asp-action="Index" class="btn btn-warning">Quay lại</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        $(function () {
+            $('#section-form').on('submit', function (e) {
+                e.preventDefault();
+                const form = $(this);
+                const actionUrl = form.attr('action');
+                const formData = form.serialize();
+
+                $.ajax({
+                    url: actionUrl,
+                    type: 'POST',
+                    data: formData,
+                    success: function (response) {
+                        if (response.success) {
+                            alert(response.message);
+                            window.location.href = "@Url.Action("Index")";
+                        } else {
+                            alert('Lỗi: ' + (response.message || 'Có lỗi xảy ra.') + '\nChi tiết: ' + JSON.stringify(response.errors || {}));
+                        }
+                    },
+                    error: function (xhr) {
+                        alert('Lỗi kết nối đến máy chủ: ' + (xhr.responseJSON?.message || 'Lỗi không xác định'));
+                    }
+                });
+            });
+        });
+    </script>
+}

@@ -39,6 +39,23 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseModel
             .ToListAsync();
     }
 
+    public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> filter, string includeProperties = "")
+    {
+        IQueryable<T> query = _context.Set<T>()
+            .Where(e => e.IsActive && !e.IsDeleted)
+            .Where(filter);
+
+        if (!string.IsNullOrWhiteSpace(includeProperties))
+        {
+            foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                query = query.Include(includeProperty);
+            }
+        }
+
+        return await query.ToListAsync();
+    }
+
     public async Task<T?> GetByIdAsync(int id)
     {
         var entity = await _context.Set<T>().FindAsync(id);

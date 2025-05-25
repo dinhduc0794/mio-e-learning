@@ -63,27 +63,32 @@ public class CourseService : ICourseService
             IsDeleted = course.IsDeleted,
             CreatedByUserId = course.CreatedByUserId,
             UpdatedByUserId = course.UpdatedByUserId,
-            Sections = course.Sections?.Select(s => new SectionViewModel
-            {
-                SectionId = s.SectionId,
-                SectionName = s.SectionName,
-                Description = s.Description,
-                Order = s.Order,
-                Lessons = s.Lessons?.Select(l => new LessonViewModel
+            Sections = course.Sections?
+                .OrderBy(s => s.Order) 
+                .Select(s => new SectionViewModel
                 {
-                    LessonId = l.LessonId,
-                    LessonName = l.LessonName,
-                    Description = l.Description,
-                    Content = l.Content,
-                    VideoUrl = l.VideoUrl,
-                    DocumentUrl = l.DocumentUrl,
-                    Order = l.Order
-                }).ToList() ?? new List<LessonViewModel>()
-            }).ToList() ?? new List<SectionViewModel>()
+                    SectionId = s.SectionId,
+                    SectionName = s.SectionName,
+                    Description = s.Description,
+                    Order = s.Order,
+                    Lessons = s.Lessons?
+                        .OrderBy(l => l.Order) 
+                        .Select(l => new LessonViewModel
+                        {
+                            LessonId = l.LessonId,
+                            LessonName = l.LessonName,
+                            Description = l.Description,
+                            Content = l.Content,
+                            VideoUrl = l.VideoUrl,
+                            DocumentUrl = l.DocumentUrl,
+                            Order = l.Order
+                        }).ToList() ?? new()
+                }).ToList() ?? new()
         };
 
         return ResultViewModel<CourseViewModel>.Success(model, "Lấy chi tiết khóa học thành công");
     }
+
 
     public async Task<ResultViewModel<CourseViewModel>> AddCourseAsync(CourseViewModel model)
     {

@@ -32,4 +32,6 @@ public class LessonViewModel : BaseModel
     public IFormFile? DocumentFile { get; set; }
 
     public int Order { get; set; }
+    public int SectionId { get; set; }
+    public string SectionName { get; set; }
 }

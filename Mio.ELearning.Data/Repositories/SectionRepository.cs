@@ -7,18 +7,26 @@ namespace Mio.ELearning.Data.Repositories;
 public class SectionRepository : GenericRepository<Section>, ISectionRepository
 {
     public SectionRepository(LMSDbContext context) : base(context) { }
-    public async Task<List<Section>> GetAllWithLessonsAsync(int courseId)
+
+    public async Task<List<Section>> GetAllWithCourseAsync()
     {
         return await _context.Sections
-            .Include(s => s.Lessons)
-            .Where(s => s.CourseId == courseId && !s.IsDeleted)
+            .Include(s => s.Course)
+            .Where(s => s.IsActive && !s.IsDeleted)
             .ToListAsync();
     }
 
-    public async Task<Section> GetByIdWithLessonsAsync(int sectionId)
+    public async Task<Section> GetByIdWithCourseAsync(int id)
+    {
+        return await _context.Sections
+            .Include(s => s.Course)
+            .FirstOrDefaultAsync(s => s.SectionId == id && s.IsActive && !s.IsDeleted);
+    }
+
+    public async Task<Section> GetByIdWithLessonsAsync(int id)
     {
         return await _context.Sections
             .Include(s => s.Lessons)
-            .FirstOrDefaultAsync(s => s.SectionId == sectionId && !s.IsDeleted);
+            .FirstOrDefaultAsync(s => s.SectionId == id);
     }
 }

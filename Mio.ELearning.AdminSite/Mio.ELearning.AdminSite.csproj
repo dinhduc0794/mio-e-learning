@@ -25,9 +25,5 @@
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
     </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Areas\Lesson\Views\Lesson\" />
-      <Folder Include="Areas\Section\Views\Section\" />
-    </ItemGroup>
 
 </Project>

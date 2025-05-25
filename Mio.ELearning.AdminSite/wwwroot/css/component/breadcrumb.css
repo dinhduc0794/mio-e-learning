@@ -13,7 +13,7 @@
 }
 
 .breadcrumb a {
-    color: var(--primary-hover);
+    color: #36bf76;
     text-decoration: none;
     position: relative;
 }
@@ -21,4 +21,3 @@
 .breadcrumb a:hover {
     text-decoration: underline;
 }
-
