@@ -23,6 +23,15 @@
     letter-spacing: 0.05em;
 }
 
+table.dataTable i {
+    transition: all 0.2s ease;
+}
+
+table.dataTable i:hover {
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
 .table-striped>tbody>tr:nth-of-type(odd) {
     background-color: #f9f9f9;
 }
