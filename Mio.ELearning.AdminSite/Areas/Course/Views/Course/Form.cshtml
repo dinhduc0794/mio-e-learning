@@ -75,9 +75,14 @@
                 <div class="row mb-3">
                     <label asp-for="CategoryId" class="col-sm-3 col-form-label">Danh mục</label>
                     <div class="col-sm-9">
-                        <select asp-for="CategoryId" class="form-select" asp-items="ViewBag.AllCategories">
-                            <option value="">-- Chọn danh mục --</option>
+                        @* <select asp-for="CategoryId" class="form-select" asp-items="ViewBag.AllCategories"> *@
+                        @*     <option value="">-- Chọn danh mục --</option> *@
+                        @* </select> *@
+
+                        <select asp-for="CategoryId" id="categoryFilter" class="form-select" style="width: 100%;">
+                            <option value="">Chọn danh mục</option>
                         </select>
+                        
                         <span asp-validation-for="CategoryId" class="text-danger"></span>
                     </div>
                 </div>
@@ -114,6 +119,58 @@
 @section Scripts {
     <script>
         $(function () {
+
+            $("#categoryFilter").select2({
+                placeholder: "Chọn danh mục",
+                allowClear: true,
+                ajax: {
+                    url: '@Url.Action("GetCategoriesForSelect2", "Course")',
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            term: params.term || '' // Search term
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: data.results || [],
+                            pagination: {
+                                more: data.more || false
+                            }
+                        };
+                    },
+                    cache: true
+                },
+                minimumInputLength: 0, // Cho phep tim kiem string rong
+                templateResult: function (data) {
+                    return $('<span>' + data.text + '</span>');
+                },
+                templateSelection: function (data) {
+                    return data.text || 'Chọn danh mục';
+                }
+            });
+
+            // Set initial category neu dang o che do Edit
+            var selectedCategoryId = '@Model.CategoryId';
+            if (selectedCategoryId) {
+                $.ajax({
+                    url: '@Url.Action("GetCategoriesForSelect2", "Course")',
+                    dataType: 'json',
+                    data: { term: '' },
+                    success: function (data) {
+                        var selectedCategory = data.results.find(function (item) {
+                            return item.id == selectedCategoryId;
+                        });
+                        if (selectedCategory) {
+                            var newOption = new Option(selectedCategory.text, selectedCategory.id, true, true);
+                            $("#categoryFilter").append(newOption).trigger('change');
+                        }
+                    }
+                });
+            }
+            
+            // Section and Lesson 
             let sectionIndex = @Model.Sections?.Count ?? 0;
             const initialSections = @Html.Raw(JsonSerializer.Serialize(Model.Sections ?? new List<SectionViewModel>()));
 

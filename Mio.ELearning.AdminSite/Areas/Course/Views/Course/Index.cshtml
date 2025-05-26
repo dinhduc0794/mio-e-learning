@@ -25,15 +25,18 @@
                 <div class="col-12">
                     <div class="filter-container mb-4">
                         <label for="categoryFilter" class="form-label me-2">Lọc theo danh mục:</label>
-                        <select id="categoryFilter" class="form-select d-inline-block" style="width: auto;">
-                            <option value="" selected="@(ViewBag.SelectedCategoryId == null ? "selected" : null)">Tất cả</option>
-                            @foreach (var category in ViewBag.AllCategories)
-                            {
-                                <option value="@category.Value"
-                                        selected="@(ViewBag.SelectedCategoryId != null && ViewBag.SelectedCategoryId.ToString() == category.Value ? "selected" : null)">
-                                    @category.Text
-                                </option>
-                            }
+                        @* <select id="categoryFilter" class="form-select d-inline-block" style="width: auto;"> *@
+                        @*     <option value="" selected="@(ViewBag.SelectedCategoryId == null ? "selected" : null)">Tất cả</option> *@
+                        @*     @foreach (var category in ViewBag.AllCategories) *@
+                        @*     { *@
+                        @*         <option value="@category.Value" *@
+                        @*                 selected="@(ViewBag.SelectedCategoryId != null && ViewBag.SelectedCategoryId.ToString() == category.Value ? "selected" : null)"> *@
+                        @*             @category.Text *@
+                        @*         </option> *@
+                        @*     } *@
+                        @* </select> *@
+                        <select id="categoryFilter" class="form-select d-inline-block" style="width: 300px; display: inline-block;">
+                            <option value="" selected>Tất cả</option>
                         </select>
                     </div>
                     <div class="text-end mb-4 add" style="margin: -60px 0;">
@@ -95,6 +98,62 @@
     
     <script>
         $(document).ready(function () {
+            // Select2
+            $("#categoryFilter").select2({
+                placeholder: "Chọn danh mục",
+                allowClear: true,
+                ajax: {
+                    url: '@Url.Action("GetCategoriesForSelect2", "Course")',
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            term: params.term || '' // Search term
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: data.results || [],
+                            pagination: {
+                                more: data.more || false
+                            }
+                        };
+                    },
+                    cache: true
+                },
+                minimumInputLength: 0, // Cho phep tim voi input rong
+                templateResult: function (data) {
+                    if (!data.id) {
+                        return data.text;
+                    }
+                    var $result = $('<span>' + data.text + '</span>');
+                    return $result;
+                },
+                templateSelection: function (data) {
+                    return data.text || data.id;
+                }
+            });
+
+            // Chọn danh mục đã được chọn từ ViewBag
+            var selectedCategoryId = '@ViewBag.SelectedCategoryId';
+            if (selectedCategoryId) {
+                $.ajax({
+                    url: '@Url.Action("GetCategoriesForSelect2", "Course")',
+                    dataType: 'json',
+                    data: { term: '' },
+                    success: function (data) {
+                        var selectedCategory = data.results.find(function (item) {
+                            return item.id == selectedCategoryId;
+                        });
+                        if (selectedCategory) {
+                            var newOption = new Option(selectedCategory.text, selectedCategory.id, true, true);
+                            $("#categoryFilter").append(newOption).trigger('change');
+                        }
+                    }
+                });
+            }
+            
+            
             var tblCourse = $("#courseList").DataTable({
                 destroy: true,
                 serverSide: false,

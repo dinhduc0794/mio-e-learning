@@ -31,12 +31,13 @@ public class CourseController : Controller
             return View(new List<CourseViewModel>());
         }
 
-        ViewBag.AllCategories = await GetCategorySelectList();
+        // ViewBag.AllCategories = await GetCategorySelectList();
         ViewBag.SelectedCategoryId = categoryId;
 
         return View(result.Data ?? new List<CourseViewModel>());
     }
 
+    
     [HttpGet]
     public async Task<IActionResult> GetAllCourses(int? categoryId)
     {
@@ -52,7 +53,7 @@ public class CourseController : Controller
     [HttpGet]
     public async Task<IActionResult> Create()
     {
-        ViewBag.AllCategories = await GetCategorySelectList();
+        // ViewBag.AllCategories = await GetCategorySelectList();
         return View("Form", new CourseViewModel());
     }
 
@@ -91,7 +92,7 @@ public class CourseController : Controller
     [HttpGet]
     public async Task<IActionResult> Edit(int id)
     {
-        ViewBag.AllCategories = await GetCategorySelectList();
+        // ViewBag.AllCategories = await GetCategorySelectList();
         var result = await _courseService.GetCourseByIdAsync(id);
         if (!result.IsSuccess)
             return NotFound();
@@ -166,11 +167,34 @@ public class CourseController : Controller
         return $"/Uploads/{folder}/{fileName}";
     }
 
-    private async Task<List<SelectListItem>> GetCategorySelectList()
+    [HttpGet]
+    public async Task<IActionResult> GetCategoriesForSelect2(string term)
     {
         var result = await _categoryService.GetAllCategoriesAsync();
-        return result.IsSuccess && result.Data != null
-            ? result.Data.Select(c => new SelectListItem { Value = c.CategoryId.ToString(), Text = c.Name }).ToList()
-            : new List<SelectListItem>();
+        if (!result.IsSuccess || result.Data == null)
+        {
+            return Json(new Select2ResultViewModel { Results = new List<Select2ViewModel>(), More = false });
+        }
+
+        var categories = result.Data
+            .Where(c => string.IsNullOrEmpty(term) || c.Name.Contains(term, StringComparison.OrdinalIgnoreCase))
+            .Select(c => new Select2ViewModel
+            {
+                Id = c.CategoryId,
+                Text = c.Name,
+                ImageUrl = null, 
+                More = null 
+            })
+            .ToList();
+
+        return Json(new Select2ResultViewModel { Results = categories, More = false });
     }
+    
+    // private async Task<List<SelectListItem>> GetCategorySelectList()
+    // {
+    //     var result = await _categoryService.GetAllCategoriesAsync();
+    //     return result.IsSuccess && result.Data != null
+    //         ? result.Data.Select(c => new SelectListItem { Value = c.CategoryId.ToString(), Text = c.Name }).ToList()
+    //         : new List<SelectListItem>();
+    // }
 }
