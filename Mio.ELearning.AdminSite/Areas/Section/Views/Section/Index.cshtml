@@ -184,12 +184,14 @@
                         data: "sectionId",
                         render: function (data) {
                             return `
-                                <a href="@Url.Action("Edit")/${data}" title="Sửa học phần" data-bs-toggle="tooltip">
-                                    <i class="fas fa-pen-square text-primary me-2" style="font-size:1.4em;"></i>
-                                </a>
-                                <a href="#" onclick="deleteSection(${data})" title="Xóa học phần" data-bs-toggle="tooltip">
-                                    <i class="fas fa-trash-alt text-danger" style="font-size:1.4em;"></i>
-                                </a>`;
+                                <div style="display: flex; justify-content: center; gap: 10px;">
+                                    <a href="@Url.Action("Edit")/${data}" title="Sửa học phần" data-bs-toggle="tooltip">
+                                        <i class="fas fa-pencil-alt text-primary me-2" style="font-size:1.4em;"></i>
+                                    </a>
+                                    <a href="#" onclick="deleteSection(${data})" title="Xóa học phần" data-bs-toggle="tooltip">
+                                        <i class="fas fa-trash-alt text-danger" style="font-size:1.4em;"></i>
+                                    </a>
+                                </div>`;
                         },
                         className: "text-center"
                     }

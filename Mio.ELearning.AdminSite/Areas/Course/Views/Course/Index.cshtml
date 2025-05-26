@@ -178,12 +178,15 @@
                         data: "courseId",
                         render: function (data) {
                             return `
-                                <a href="@Url.Action("Edit")/${data}" title="Sửa khóa học" data-bs-toggle="tooltip">
-                                    <i class="fas fa-pen-square text-primary me-2" style="font-size:1.4em;"></i>
-                                </a>
-                                <a href="#" onclick="deleteCourse(${data})" title="Xóa khóa học" data-bs-toggle="tooltip">
-                                    <i class="fas fa-trash-alt text-danger" style="font-size:1.4em;"></i>
-                                </a>`;
+                                <div style="display: flex; justify-content: center; gap: 10px;">
+                                    <a href="@Url.Action("Edit")/${data}" title="Sửa khóa học" data-bs-toggle="tooltip"">
+                                        <i class="fas fa-pencil-alt text-primary" style="font-size:1.4em;"></i>
+                                    </a>
+                                    <a href="#" onclick="deleteCourse(${data})" title="Xóa khóa học" data-bs-toggle="tooltip">
+                                        <i class="fas fa-trash-alt text-danger" style="font-size:1.4em;"></i>
+                                    </a>
+                                </div>
+                            `;
                         },
                         className: "text-center"
                     }

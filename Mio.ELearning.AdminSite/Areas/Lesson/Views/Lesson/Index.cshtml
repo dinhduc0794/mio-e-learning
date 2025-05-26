@@ -185,12 +185,15 @@
                         data: "lessonId",
                         render: function (data) {
                             return `
+                            <div style="display: flex; justify-content: center; gap: 10px;">
                                 <a href="@Url.Action("Edit")/${data}" title="Sửa bài học" data-bs-toggle="tooltip">
-                                    <i class="fas fa-pen-square text-primary me-2" style="font-size:1.4em;"></i>
+                                    <i class="fas fa-pencil-alt text-primary me-2" style="font-size:1.4em;"></i>
                                 </a>
                                 <a href="#" onclick="deleteLesson(${data})" title="Xóa bài học" data-bs-toggle="tooltip">
                                     <i class="fas fa-trash-alt text-danger" style="font-size:1.4em;"></i>
-                                </a>`;
+                                </a>
+                            </div>
+                            `;
                         },
                         className: "text-center"
                     }

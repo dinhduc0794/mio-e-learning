@@ -134,12 +134,15 @@
                         data: "categoryId",
                         render: function (data, type, row) {
                             return `
+                            <div style="display: flex; justify-content: center; gap: 10px;">
                                 <a href="@Url.Action("Form")/${data}" data-bs-toggle="tooltip" title="Sửa danh mục">
-                                    <i class="fas fa-pen-square mx-1 text-primary" style="font-size:1.5em; line-height:1em;"></i>
+                                    <i class="fas fa-pencil-alt mx-1 text-primary" style="font-size:1.5em; line-height:1em;"></i>
                                 </a>
                                 <a href="#" onclick="deleteCategory(${data})" data-bs-toggle="tooltip" title="Xóa danh mục">
                                     <i class="fas fa-trash-alt mx-1 text-danger" style="font-size:1.5em; line-height:1em;"></i>
-                                </a>`;
+                                </a>
+                            </div>
+                            `;
                         },
                         className: "text-center"
                     }
