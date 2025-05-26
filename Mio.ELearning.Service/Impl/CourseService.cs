@@ -20,7 +20,7 @@ public class CourseService : ICourseService
         var courses = await _unitOfWork.Courses.GetAllWithCategoryAsync();
         var query = courses.AsQueryable();
 
-        if (categoryId.HasValue)
+        if (categoryId.HasValue && categoryId.Value > 0)
         {
             query = query.Where(c => c.CategoryId == categoryId.Value);
         }

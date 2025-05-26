@@ -170,23 +170,33 @@ public class CourseController : Controller
     [HttpGet]
     public async Task<IActionResult> GetCategoriesForSelect2(string term)
     {
+        var categories = new List<Select2ViewModel>();
+
         var result = await _categoryService.GetAllCategoriesAsync();
-        if (!result.IsSuccess || result.Data == null)
+        if (result.IsSuccess && result.Data != null)
         {
-            return Json(new Select2ResultViewModel { Results = new List<Select2ViewModel>(), More = false });
-        }
+            var filteredCategories = result.Data
+                .Where(c => string.IsNullOrEmpty(term) || c.Name.Contains(term, StringComparison.OrdinalIgnoreCase))
+                .Select(c => new Select2ViewModel
+                {
+                    Id = c.CategoryId,
+                    Text = c.Name,
+                    ImageUrl = null,
+                    More = null
+                })
+                .ToList();
 
-        var categories = result.Data
-            .Where(c => string.IsNullOrEmpty(term) || c.Name.Contains(term, StringComparison.OrdinalIgnoreCase))
-            .Select(c => new Select2ViewModel
+            categories.AddRange(filteredCategories);
+            
+            categories.Insert(0, new Select2ViewModel()
             {
-                Id = c.CategoryId,
-                Text = c.Name,
-                ImageUrl = null, 
-                More = null 
-            })
-            .ToList();
-
+                Id = 0,
+                Text = "Tất cả",
+                ImageUrl = null,
+                More = null
+            });
+        }
+        
         return Json(new Select2ResultViewModel { Results = categories, More = false });
     }
     
