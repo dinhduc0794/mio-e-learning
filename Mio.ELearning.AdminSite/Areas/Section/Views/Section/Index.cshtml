@@ -74,6 +74,24 @@
 </div>
 
 @section Scripts {
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmDeleteModalLabel">Xác nhận xóa</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+                </div>
+                <div class="modal-body">
+                    Bạn có chắc muốn xóa học phần này không?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Xóa</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         $(document).ready(function () {
             var tblSection = $("#sectionList").DataTable({
@@ -116,7 +134,7 @@
                     },
                     error: function (xhr, error, thrown) {
                         console.log("AJAX error:", xhr, error, thrown);
-                        toastr.error("Lỗi khi tải dữ liệu: " + (xhr.responseJSON?.message || "Lỗi không xác định"));
+                        alert("Lỗi khi tải dữ liệu: " + (xhr.responseJSON?.message || "Lỗi không xác định"));
                     }
                 },
                 columns: [
@@ -182,6 +200,40 @@
                 tblSection.ajax.reload();
             });
 
+            let selectedSectionId = null;
+
+            window.deleteSection = function (id) {
+                selectedSectionId = id;
+                const deleteModal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
+                deleteModal.show();
+            };
+
+            document.getElementById("confirmDeleteBtn").addEventListener("click", function () {
+                if (selectedSectionId !== null) {
+                    $.ajax({
+                        url: '@Url.Action("Delete", "Section")',
+                        type: "POST",
+                        data: { id: selectedSectionId },
+                        success: function (response) {
+                            bootstrap.Modal.getInstance(document.getElementById('confirmDeleteModal')).hide();
+                            selectedSectionId = null;
+
+                            alert(response.message || "Xóa thành công!");
+                            if (response.success) {
+                                $('#sectionList').DataTable().ajax.reload();
+                            }
+                        },
+                        error: function (xhr) {
+                            bootstrap.Modal.getInstance(document.getElementById('confirmDeleteModal')).hide();
+                            selectedSectionId = null;
+
+                            alert("Đã có lỗi xảy ra: " + (xhr.responseJSON?.message || "Lỗi không xác định"));
+                        }
+                    });
+                }
+            });
+
+            /*
             window.deleteSection = function (id) {
                 if (confirm("Bạn có chắc muốn xóa học phần này?")) {
                     $.ajax({
@@ -202,6 +254,7 @@
                     });
                 }
             };
+            */
         });
     </script>
 }

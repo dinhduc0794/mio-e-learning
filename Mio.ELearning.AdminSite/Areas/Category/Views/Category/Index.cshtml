@@ -51,7 +51,26 @@
     </div>
 </div>
 
-@section Scripts {  
+@section Scripts {
+
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmDeleteModalLabel">Xác nhận xóa</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+                </div>
+                <div class="modal-body">
+                    Bạn có chắc muốn xóa danh mục này không?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Xóa</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <script>
         $(document).ready(function () {
             var tblCategory = $("#categoryList").DataTable({
@@ -127,6 +146,42 @@
                 ]
             });
 
+            let selectedCategoryId = null;
+
+            window.deleteCategory = function (id) {
+                selectedCategoryId = id;
+                const deleteModal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
+                deleteModal.show();
+            };
+
+            document.getElementById("confirmDeleteBtn").addEventListener("click", function () {
+                if (selectedCategoryId !== null) {
+                    $.ajax({
+                        url: "@Url.Action("DeleteConfirmed", "Category")",
+                        type: "POST",
+                        data: { id: selectedCategoryId },
+                        success: function (response) {
+                            bootstrap.Modal.getInstance(document.getElementById('confirmDeleteModal')).hide();
+                            selectedCategoryId = null;
+
+                            alert(response.message || "Xóa danh mục thành công!");
+
+                            if (response.success) {
+                                $("#categoryList").DataTable().ajax.reload();
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            bootstrap.Modal.getInstance(document.getElementById('confirmDeleteModal')).hide();
+                            selectedCategoryId = null;
+
+                            var message = xhr.responseJSON?.message || "Đã có lỗi xảy ra khi xóa danh mục.";
+                            alert("Lỗi: " + message + " (Trạng thái: " + status + ")");
+                        }
+                    });
+                }
+            });
+            
+            /*
             window.deleteCategory = function (id) {
                 if (confirm("Bạn có chắc muốn xóa danh mục này?")) {
                     $.ajax({
@@ -146,6 +201,7 @@
                     });
                 }
             };
+            */
         });
     </script>
 }
