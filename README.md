@@ -87,11 +87,3 @@ mio-e-learning/
    ```bash
    dotnet run
    ```
-
-## Future Improvements
-- Add advanced features like course progress tracking and quiz management.
-- Implement role-based access control for enhanced security.
-- Optimize frontend performance with advanced JavaScript frameworks.
-
-## Acknowledgments
-Special thanks to my mentor, Ngô Đăng Anh Khoa, and the team at Saigon Mio Technology JSC for their guidance and support during the internship.
